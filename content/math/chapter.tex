@@ -62,6 +62,7 @@ magic flux $F=b^2+d^2-a^2-c^2$:
  For cyclic quadrilaterals the sum of opposite angles is $180^\circ$,
 $ef = ac + bd$, and $A = \sqrt{(p-a)(p-b)(p-c)(p-d)}$.
 
+
 \subsection{Spherical coordinates}
 \begin{center}
 \includegraphics[width=25mm]{content/math/sphericalCoordinates}
@@ -72,13 +73,35 @@ y = r\sin\theta\sin\phi & \theta = \textrm{acos}(z/\sqrt{x^2+y^2+z^2})\\
 z = r\cos\theta & \phi = \textrm{atan2}(y,x)
 \end{array}\]
 
+% \section{Derivatives/Integrals}
+% \begin{align*}
+% 	\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1-x^2}} &&& \dfrac{d}{dx}\arccos x = -\dfrac{1}{\sqrt{1-x^2}} \\
+% 	\dfrac{d}{dx}\tan x = 1+\tan^2 x &&& \dfrac{d}{dx}\arctan x = \dfrac{1}{1+x^2} \\
+% 	\int\tan ax = -\dfrac{\ln|\cos ax|}{a} &&& \int x\sin ax = \dfrac{\sin ax-ax \cos ax}{a^2} \\
+% 	\int e^{-x^2} = \frac{\sqrt \pi}{2} \text{erf}(x) &&& \int xe^{ax}dx = \frac{e^{ax}}{a^2}(ax-1)
+% \end{align*}
+
+
 \section{Derivatives/Integrals}
+% \scalebox{0.9}{\parbox{\linewidth}{
 \begin{align*}
-	\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1-x^2}} &&& \dfrac{d}{dx}\arccos x = -\dfrac{1}{\sqrt{1-x^2}} \\
-	\dfrac{d}{dx}\tan x = 1+\tan^2 x &&& \dfrac{d}{dx}\arctan x = \dfrac{1}{1+x^2} \\
-	\int\tan ax = -\dfrac{\ln|\cos ax|}{a} &&& \int x\sin ax = \dfrac{\sin ax-ax \cos ax}{a^2} \\
-	\int e^{-x^2} = \frac{\sqrt \pi}{2} \text{erf}(x) &&& \int xe^{ax}dx = \frac{e^{ax}}{a^2}(ax-1)
-\end{align*}
+        \int \sqrt{a^2+x^2} dx = \frac{x}{2}\sqrt{a^2+x^2} + \frac{a^2}{2}\ln (x+\sqrt{a^2+x^2})\\
+		\int \sqrt{a^2-x^2} dx = \frac{x}{2}\sqrt{a^2-x^2} + \frac{a^2}{2}\arcsin\frac{x}{|a|}\\
+        \int \frac{dx}{\sqrt{a^2-x^2}} = \arcsin\frac{x}{|a|} = -\arccos\frac{x}{|a|}\\
+		\int \frac{dx}{\sqrt{a^2+x^2}} = \ln (x+\sqrt{a^2+x^2})\\
+        \text{Sub } s = \tan(x/2) \text{ to get: } dx =  \frac{2\ ds}{1+s^2}\\
+		\sin x = \frac{2s}{1+s^2},\ \cos x = \frac{1-s^2}{1+s^2}\\
+        \int_a^bf(x)g(x)dx = [F(x)g(x)]_a^b-\int_a^bF(x)g'(x)dx\\
+		\text{(Integration by parts)} \int\tan ax = -\dfrac{\ln|\cos ax|}{a}\\
+		\int x\sin ax = \dfrac{\sin ax-ax \cos ax}{a^2}\\
+        \int e^{-x^2} = \frac{\sqrt \pi}{2} \text{erf}(x), \ \ \int xe^{ax}dx = \frac{e^{ax}}{a^2}(ax-1)\\
+		\dfrac{d}{dx}\tan x = 1+\tan^2x, \ \  \dfrac{d}{dx}\arctan x = \dfrac{1}{1+x^2}\\
+        \text{Curve length: } \int_a^b\sqrt{1+(f'(x))^2}dx\\
+		\text{When } X(t), Y(t): \int_a^b\sqrt{(X'(t))^2+(Y'(t))^2}dt\\
+        \text{Solid of revolution vol: } \pi\int_a^b(f(x))^2dx\\
+		\text{Surface area: } 2\pi\int_a^b|f(x)|\sqrt{1+(f'(x))^2}dx
+    \end{align*}
+% }}
 
 Integration by parts:
 \[\int_a^bf(x)g(x)dx = [F(x)g(x)]_a^b-\int_a^bF(x)g'(x)dx\]

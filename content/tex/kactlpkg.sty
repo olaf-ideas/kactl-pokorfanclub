@@ -122,9 +122,9 @@
 
 	\parindent \z@ \raggedright \normalfont
 		\interlinepenalty\@M
-	{\underline{\huge \bfseries #1} }
+	{\underline{\large \bfseries #1} }
 	\ifnum \c@secnumdepth >\m@ne
-		{\huge\bfseries (\thechapter) \par\nobreak }
+		{\bfseries (\thechapter) \par\nobreak }
 	\fi
 	\startcontents[chapters]
 }
@@ -132,17 +132,17 @@
 \renewcommand\section{\@startsection {section}{1}{\z@}%
                                    {-0.5ex \@plus -1ex \@minus -.2ex}%
                                    {.4ex}%
-                                   {\normalfont\LARGE\bfseries}}
+                                   {\normalfont\bfseries}}
 
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}
 	{1ex\@plus -1ex \@minus -.3ex}
 	{.2ex}
-	{\normalfont\large\bfseries}}
+	{\normalfont\bfseries}}
 
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}
 	{1ex\@plus -1ex \@minus -.3ex}
 	{1ex \@plus .2ex}
-	{\normalfont\large\bfseries}}
+	{\normalfont\bfseries}}
 
 % Styles for local toc
 \titlecontents{localsection}[1.5em]{\small}{}
@@ -193,16 +193,16 @@
 
 % Configure source code listings
 \lstset{language=C++}
-\lstset{morekeywords={alignas,alignof}}
+\lstset{otherkeywords={alignas,alignof,rep,sz,all,vi,pii,Point,Point3D,Poly}}
 \lstset{deletedirectives={line}}
 \lstset{frame=t}
 \lstset{tabsize=2}
 \lstset{showstringspaces=false}
 \lstset{breaklines=true}
-\lstset{basicstyle=\footnotesize\ttfamily}
+\lstset{basicstyle=\fontsize{6}{6}\selectfont\ttfamily}
 \lstset{commentstyle=\normalfont\itshape}
 \lstset{literate={^}{\caret}{1} {~}{\tilde}{1} {\{}{\nicelbrace}{1} {\}}{\nicerbrace}{1}}
-\lstset{emptylines=*1}
+\lstset{emptylines=*0}
 \lstset{inputencoding=utf8}
 \lstset{aboveskip=3pt}
 \lstset{belowskip=2pt}
@@ -210,7 +210,7 @@
 \lstdefinelanguage{raw}{} % Raw language, no keywords.
 
 \setlength{\columnseprule}{0.5pt} % Multicol separation line with
-\setlength{\columnsep}{10pt} % Multicol separation margin
+\setlength{\columnsep}{7pt} % Multicol separation margin
 \setcounter{tocdepth}{1} % Table of contents depth
 
 \pdfsuppresswarningpagegroup=1
@@ -220,8 +220,8 @@
 	\setcounter{page}{0}
 	\begin{center}
 		\strut % Magic
-		\vspace{3cm}\\
-		\includegraphics[width=3cm]{\@unilogo}\\
+		\vspace{0.5cm}\\
+		\includegraphics[width=20cm]{\@unilogo}\\
 		{\fontsize{25}{30}\selectfont \@unilong\\}
 		{\fontsize{60}{60}\selectfont \@teamname\\}
 		\vspace{0.5cm}

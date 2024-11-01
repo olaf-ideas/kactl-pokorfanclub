@@ -4,6 +4,8 @@
 	\kactlimport{BellmanFord.h}
 	\kactlimport{FloydWarshall.h}
 	\kactlimport{TopoSort.h}
+	\kactlimport{Shapes.h}
+	\kactlimport{SPFA.h}
 
 \section{Network flow}
 	\kactlimport{PushRelabel.h}
@@ -12,7 +14,21 @@
 	% \kactlimport{Dinic.h}
 	\kactlimport{MinCut.h}
 	\kactlimport{GlobalMinCut.h}
+	\kactlimport{FlowDemands.h}
 	\kactlimport{GomoryHu.h}
+
+\section{Flow with demands}
+	% \vspace{20pt}
+    \scalebox{0.8}{\parbox{\linewidth}{
+    Say we want $d(e) \le f(e) \le c(e)$ for each edge.
+    To find an arbitrary flow, add $s', t'$ and the following edges:
+    \begin{itemize}
+        \item $\forall v \in V: c'((s',v)) = \sum_u d((u,v)), \hspace{0.5cm} c'((v, t')) = \sum_w d((v,w))$,
+        \item $\forall (u,v) \in E: c'((u,v)) = c((u,v)) - d((u,v))$,
+        \item $c'((t,s)) = \infty$.
+    \end{itemize}
+    For min flow, replace $\infty$ with $L$ and find smallest $L$ such that flow is saturated.
+    }}
 
 \section{Matching}
 	\kactlimport{hopcroftKarp.h}
@@ -20,15 +36,23 @@
 	\kactlimport{MinimumVertexCover.h}
 	\kactlimport{WeightedMatching.h}
 	\kactlimport{GeneralMatching.h}
+    \kactlimport{MatroidIntersection.h}
+	\kactlimport{Konig.h}
 
 \section{DFS algorithms}
 	\kactlimport{SCC.h}
 	\kactlimport{BiconnectedComponents.h}
 	\kactlimport{2sat.h}
 	\kactlimport{EulerWalk.h}
+	\kactlimport{Dominators.h}
+	\kactlimport{KthShortest.h}
+	\kactlimport{PlanarFaces.h}
+	\kactlimport{PlanarityCheck.h}
 
 \section{Coloring}
 	\kactlimport{EdgeColoring.h}
+	\kactlimport{ChordalGraph.h}
+	\kactlimport{ChromaticNumber.h}
 
 \section{Heuristics}
 	\kactlimport{MaximalCliques.h}
@@ -38,10 +62,12 @@
 \section{Trees}
 	\kactlimport{BinaryLifting.h}
 	\kactlimport{LCA.h}
+	\kactlimport{LCA2.h}
 	\kactlimport{CompressTree.h}
 	\kactlimport{HLD.h}
 	\kactlimport{LinkCutTree.h}
 	\kactlimport{DirectedMST.h}
+	\kactlimport{Centroid.h}
 
 \section{Math}
 	\subsection{Number of Spanning Trees}

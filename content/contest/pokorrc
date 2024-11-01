@@ -1,0 +1,8 @@
+c() {
+ g++ $1.cpp -o $1 -std=c++17 -Wall -Wshadow \
+ -fsanitize=address,undefined -g -DDEBUG -DLOCAL
+}
+nc() { g++ $1.cpp -o $1 -std=c++17 -O3; }
+r() { command time -f "%Us %M KB" ./$1; }
+libhash() { cat $1.cpp | cpp -dD -P -fpreprocessed | \
+tr -d '[:space:]'| md5sum |cut -c-6; }
