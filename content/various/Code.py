@@ -1,38 +1,31 @@
 /**
  * Author: none
- * Date: 2017-04-18
- * Source: none
- * Description: How python works?
- * Time: O(n^2)
- * Status: tested on SPOJ CH3D
+ * License: CC0
+ * Description: Python cheatsheet
+ * Status: tested
  */
-import sys
-sys.setrecursionlimit(10**8)
-fib_mem = [1] * 2
-def fill_fib(n):
-  global fib_mem
-  while len(fib_mem) <= n:
-    fib_mem.append(fib_mem[-2] + fib_mem[-1])
-def main():
-  # Write here. Use PyPy. Don't use list of list -- use instead 1D list with indices i + m * j.
-  # Use a // b instead of a / b. Don't use recursive functions (rec limit is approx 1000).
-  assert list(range(3, 6)) == [3, 4, 5]
-  s = set()
-  s.add(5)
-  for x in s:
-    print(x)
-  s = [2 * x for x in s]
-  print(eval("s[0] + 10"))
-  m = {}
-  m[5] = 6
-  assert 5 in m
-  assert list(m) == [5] # only keys!
-  line_list = list(map(int, input().split())) # gets a list of integers in the line
-  print(line_list)
-  print(' '.join(["a", "b", str(5)]))
-  while True:
-    try:
-      line_int = int(input())
-    except Exception as e:
-      break
-main()
+int(eval("1/3".replace("/","//"))) # parser string num
+
+from fractions import Fraction
+from decimal import *
+getcontext().prec = 250 # set precision (MAX_PREC)
+getcontext().Emax = 250 # set exponent limit (MAX_EMAX)
+getcontext().rounding = ROUND_FLOOR # set round floor
+itwo,two,N = Decimal(0.5),Decimal(2),200
+def angle(cosT):
+  """given cos(theta) in decimal return theta"""
+  for i in range(N):
+    cosT = ((cosT + 1) / two) ** itwo
+  sinT = (1 - cosT * cosT) ** itwo
+  return sinT * (2 ** N)
+pi = angle(Decimal(-1))
+Fraction('3.1415926535897932').limit_denominator(1000)
+
+format(10, '0.10f') # set precision
+
+x = Fraction(1, 2)
+y = Fraction(1)
+print(x.as_integer_ratio()) # print (1, 2)
+print(x.denominator == 1) # return true if x is integer
+print(x.__round__()) 
+print(float(x)) # print 0.5

@@ -3,7 +3,7 @@
  * Date: 2016-07-24
  * License: CC0
  * Source: Russian page
- * Description: O(n\^{}\frac{3}{4}), liczba liczb pierwszych na przedziale $[1,n]$. \texttt{Pi pi(n); pi.query(d); // musi zachodzic d | n}
+ * Description: $O(n^\frac{3}{4})$, liczba liczb pierwszych na przedziale $[1,n]$. \texttt{Pi pi(n); pi.query(d); musi zachodzic d dzieli n}
  * Status: Works
  */
 struct Pi {

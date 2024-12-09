@@ -41,7 +41,6 @@ where $r=\sqrt{a^2+b^2}, \phi=\operatorname{atan2}(b,a)$.
 
 \section{Geometry}
 
-\subsection{Triangles}
 Side lengths: $a,b,c$\\
 Semiperimeter: $p=\dfrac{a+b+c}{2}$\\
 Area: $A=\sqrt{p(p-a)(p-b)(p-c)}$\\
@@ -53,7 +52,6 @@ Law of sines: $\dfrac{\sin\alpha}{a}=\dfrac{\sin\beta}{b}=\dfrac{\sin\gamma}{c}=
 Law of cosines: $a^2=b^2+c^2-2bc\cos\alpha$\\
 Law of tangents: $\dfrac{a+b}{a-b}=\dfrac{\tan\dfrac{\alpha+\beta}{2}}{\tan\dfrac{\alpha-\beta}{2}}$\\
 
-\subsection{Quadrilaterals}
 With side lengths $a,b,c,d$, diagonals $e, f$, diagonals angle $\theta$, area $A$ and
 magic flux $F=b^2+d^2-a^2-c^2$:
 
@@ -62,16 +60,18 @@ magic flux $F=b^2+d^2-a^2-c^2$:
  For cyclic quadrilaterals the sum of opposite angles is $180^\circ$,
 $ef = ac + bd$, and $A = \sqrt{(p-a)(p-b)(p-c)(p-d)}$.
 
-
 \subsection{Spherical coordinates}
 \begin{center}
 \includegraphics[width=25mm]{content/math/sphericalCoordinates}
-\end{center}
-\[\begin{array}{cc}
+\end{center}	
+\[
+\begin{array}{cc}
 x = r\sin\theta\cos\phi & r = \sqrt{x^2+y^2+z^2}\\
 y = r\sin\theta\sin\phi & \theta = \textrm{acos}(z/\sqrt{x^2+y^2+z^2})\\
 z = r\cos\theta & \phi = \textrm{atan2}(y,x)
-\end{array}\]
+\end{array}
+\]
+
 
 % \section{Derivatives/Integrals}
 % \begin{align*}
@@ -85,22 +85,22 @@ z = r\cos\theta & \phi = \textrm{atan2}(y,x)
 \section{Derivatives/Integrals}
 % \scalebox{0.9}{\parbox{\linewidth}{
 \begin{align*}
-        \int \sqrt{a^2+x^2} dx = \frac{x}{2}\sqrt{a^2+x^2} + \frac{a^2}{2}\ln (x+\sqrt{a^2+x^2})\\
-		\int \sqrt{a^2-x^2} dx = \frac{x}{2}\sqrt{a^2-x^2} + \frac{a^2}{2}\arcsin\frac{x}{|a|}\\
-        \int \frac{dx}{\sqrt{a^2-x^2}} = \arcsin\frac{x}{|a|} = -\arccos\frac{x}{|a|}\\
-		\int \frac{dx}{\sqrt{a^2+x^2}} = \ln (x+\sqrt{a^2+x^2})\\
-        \text{Sub } s = \tan(x/2) \text{ to get: } dx =  \frac{2\ ds}{1+s^2}\\
-		\sin x = \frac{2s}{1+s^2},\ \cos x = \frac{1-s^2}{1+s^2}\\
-        \int_a^bf(x)g(x)dx = [F(x)g(x)]_a^b-\int_a^bF(x)g'(x)dx\\
-		\text{(Integration by parts)} \int\tan ax = -\dfrac{\ln|\cos ax|}{a}\\
-		\int x\sin ax = \dfrac{\sin ax-ax \cos ax}{a^2}\\
-        \int e^{-x^2} = \frac{\sqrt \pi}{2} \text{erf}(x), \ \ \int xe^{ax}dx = \frac{e^{ax}}{a^2}(ax-1)\\
-		\dfrac{d}{dx}\tan x = 1+\tan^2x, \ \  \dfrac{d}{dx}\arctan x = \dfrac{1}{1+x^2}\\
-        \text{Curve length: } \int_a^b\sqrt{1+(f'(x))^2}dx\\
-		\text{When } X(t), Y(t): \int_a^b\sqrt{(X'(t))^2+(Y'(t))^2}dt\\
-        \text{Solid of revolution vol: } \pi\int_a^b(f(x))^2dx\\
-		\text{Surface area: } 2\pi\int_a^b|f(x)|\sqrt{1+(f'(x))^2}dx
-    \end{align*}
+	\int \sqrt{a^2+x^2} dx = \frac{x}{2}\sqrt{a^2+x^2} + \frac{a^2}{2}\ln (x+\sqrt{a^2+x^2})\\
+	\int \sqrt{a^2-x^2} dx = \frac{x}{2}\sqrt{a^2-x^2} + \frac{a^2}{2}\arcsin\frac{x}{|a|}\\
+	\int \frac{dx}{\sqrt{a^2-x^2}} = \arcsin\frac{x}{|a|} = -\arccos\frac{x}{|a|}\\
+	\int \frac{dx}{\sqrt{a^2+x^2}} = \ln (x+\sqrt{a^2+x^2})\\
+	\text{Sub } s = \tan(x/2) \text{ to get: } dx =  \frac{2\ ds}{1+s^2}\\
+	\sin x = \frac{2s}{1+s^2},\ \cos x = \frac{1-s^2}{1+s^2}\\
+	\int_a^bf(x)g(x)dx = [F(x)g(x)]_a^b-\int_a^bF(x)g'(x)dx\\
+	\text{(Integration by parts)} \int\tan ax = -\dfrac{\ln|\cos ax|}{a}\\
+	\int x\sin ax = \dfrac{\sin ax-ax \cos ax}{a^2}\\
+	\int e^{-x^2} = \frac{\sqrt \pi}{2} \text{erf}(x), \ \ \int xe^{ax}dx = \frac{e^{ax}}{a^2}(ax-1)\\
+	\dfrac{d}{dx}\tan x = 1+\tan^2x, \ \  \dfrac{d}{dx}\arctan x = \dfrac{1}{1+x^2}\\
+	\text{Curve length: } \int_a^b\sqrt{1+(f'(x))^2}dx\\
+	\text{When } X(t), Y(t): \int_a^b\sqrt{(X'(t))^2+(Y'(t))^2}dt\\
+	\text{Solid of revolution vol: } \pi\int_a^b(f(x))^2dx\\
+	\text{Surface area: } 2\pi\int_a^b|f(x)|\sqrt{1+(f'(x))^2}dx
+\end{align*}
 % }}
 
 Integration by parts:
@@ -197,3 +197,51 @@ $\lim_{k\rightarrow\infty}\mathbf{P}^k = \mathbf{1}\pi$.
 A Markov chain is an A-chain if the states can be partitioned into two sets $\mathbf{A}$ and $\mathbf{G}$, such that all states in $\mathbf{A}$ are absorbing ($p_{ii}=1$), and all states in $\mathbf{G}$ leads to an absorbing state in $\mathbf{A}$.
 The probability for absorption in state $i\in\mathbf{A}$, when the initial state is $j$, is $a_{ij} = p_{ij}+\sum_{k\in\mathbf{G}} a_{ik}p_{kj}$.
 The expected time until absorption, when the initial state is $i$, is $t_i = 1+\sum_{k\in\mathbf{G}}p_{ki}t_k$.
+
+\section{Other theorems}
+
+Dirichelt's approximation theorem:
+For any real $r$ and $N$, with $1 \le N$, there exist integers p and q such that $1 \le q \le N$ and
+\[
+	|q \alpha - p| \le \frac{1}{\lfloor N \rfloor + 1} < \frac{1}{N}
+\]
+\[
+0 < |\alpha - \frac{p}{q}| < \frac{1}{q^2}
+\]
+
+Stirling approximation : \\
+$n!\approx\sqrt{ 2 \pi n}(\frac{n}{e})^{n}e^\frac{1}{12n}$
+
+Stirling Numbers(permutation $|P|=n$ with $k$ cycles): \\
+$S(n,k) = \text{coefficient of }x^k \text{ in } \Pi_{i=0}^{n-1} (x+i)$
+
+Stirling Numbers(Partition $n$ elements into $k$ non-empty set): \\
+$S(n,k) = \frac{1}{k!} \sum\limits_{j=0}^k (-1)^{k-j} {k \choose j} j^n$
+
+Pick’s Theorem : $A = i + b/2 - 1$\\
+$A$: Area, $i$: grid number in the inner, $b$: grid number on the side
+
+$C_n = {2n \choose n}/(n+1)$\\
+$C^{n+m}_{n}-C^{n+m}_{n+1} = (m+n)! \frac{n-m+1}{n+1}\quad for \quad  n \ge m$\\
+$C_n = \frac{1}{n+1}{2n \choose n} = \frac{(2n)!}{(n+1)!n!}$\\
+$C_0 = 1 \quad  and \quad C_{n+1}= 2(\frac{2n+1}{n+2})C_n$\\
+$C_0 = 1 \quad  and \quad C_{n+1} = \sum_{i=0}^{n} C_iC_{n-i} \quad for \quad  n \ge 0$
+
+Euler Characteristic: \\
+planar graph: $V-E+F-C=1$ \\
+convex polyhedron: $V-E+F=2$ \\
+$V,E,F,C$: number of vertices, edges, faces(regions), and components
+
+Kirchhoff's theorem: \\
+$A_{ii} = deg(i), A_{ij} = (i,j) \in E\ ? -1 : 0$,
+Deleting any one row, one column, and cal the det(A)
+
+Polya' theorem ($c$ is number of color, $m$ is the number of cycle size): \\
+$(\sum_{i=1}^{m}{c^{gcd(i,m)}})/m$
+
+Wilson's theorem :\\
+$(p-1)! \equiv -1 (mod \ p)$
+
+Euler's totient function:\\
+$ A ^ {B ^ C} mod \ p = pow(A,pow(B,C,p-1)) mod \ p$
+

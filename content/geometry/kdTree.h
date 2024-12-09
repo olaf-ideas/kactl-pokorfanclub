@@ -8,67 +8,83 @@
 #pragma once
 
 #include "Point.h"
-
-typedef long long T;
-typedef Point<T> P;
-const T INF = numeric_limits<T>::max();
-
-bool on_x(const P& a, const P& b) { return a.x < b.x; }
-bool on_y(const P& a, const P& b) { return a.y < b.y; }
-
-struct Node {
-	P pt; // if this is a leaf, the single point in it
-	T x0 = INF, x1 = -INF, y0 = INF, y1 = -INF; // bounds
-	Node *first = 0, *second = 0;
-
-	T distance(const P& p) { // min squared distance to a point
-		T x = (p.x < x0 ? x0 : p.x > x1 ? x1 : p.x);
-		T y = (p.y < y0 ? y0 : p.y > y1 ? y1 : p.y);
-		return (P(x,y) - p).dist2();
-	}
-
-	Node(vector<P>&& vp) : pt(vp[0]) {
-		for (P p : vp) {
-			x0 = min(x0, p.x); x1 = max(x1, p.x);
-			y0 = min(y0, p.y); y1 = max(y1, p.y);
-		}
-		if (vp.size() > 1) {
-			// split on x if width >= height (not ideal...)
-			sort(all(vp), x1 - x0 >= y1 - y0 ? on_x : on_y);
-			// divide by taking half the array for each child (not
-			// best performance with many duplicates in the middle)
-			int half = sz(vp)/2;
-			first = new Node({vp.begin(), vp.begin() + half});
-			second = new Node({vp.begin() + half, vp.end()});
-		}
-	}
-};
-
+const int MXN = 100005;
 struct KDTree {
-	Node* root;
-	KDTree(const vector<P>& vp) : root(new Node({all(vp)})) {}
+  struct Nd {
+    int x,y,x1,y1,x2,y2;
+    int id,f;
+    Nd *L, *R;
+  }tree[MXN];
+  int n;
+  Nd *root;
+  LL dis2(int x1, int y1, int x2, int y2) {
+    LL dx = x1-x2; LL dy = y1-y2;
+    return dx*dx+dy*dy;
+  }
+  static bool cmpx(Nd& a, Nd& b){ return a.x<b.x; }
+  static bool cmpy(Nd& a, Nd& b){ return a.y<b.y; }
+  void init(vector<pair<int,int>> ip) {
+    n = ip.size();
+    for (int i=0; i<n; i++) {
+      tree[i].id = i;
+      tree[i].x = ip[i].first;
+      tree[i].y = ip[i].second;
+    }
+    root = build_tree(0, n-1, 0);
+  }
+  Nd* build_tree(int L, int R, int dep) {
+    if (L>R) return nullptr;
+    int M = (L+R)/2;
+    tree[M].f = dep%2;
+    nth_element(tree+L, tree+M, tree+R+1,
+                tree[M].f ? cmpy : cmpx);
+    tree[M].x1 = tree[M].x2 = tree[M].x;
+    tree[M].y1 = tree[M].y2 = tree[M].y;
 
-	pair<T, P> search(Node *node, const P& p) {
-		if (!node->first) {
-			// uncomment if we should not find the point itself:
-			// if (p == node->pt) return {INF, P()};
-			return make_pair((p - node->pt).dist2(), node->pt);
-		}
+    tree[M].L = build_tree(L, M-1, dep+1);
+    if (tree[M].L) {
+      tree[M].x1 = min(tree[M].x1, tree[M].L->x1);
+      tree[M].x2 = max(tree[M].x2, tree[M].L->x2);
+      tree[M].y1 = min(tree[M].y1, tree[M].L->y1);
+      tree[M].y2 = max(tree[M].y2, tree[M].L->y2);
+    }
 
-		Node *f = node->first, *s = node->second;
-		T bfirst = f->distance(p), bsec = s->distance(p);
-		if (bfirst > bsec) swap(bsec, bfirst), swap(f, s);
-
-		// search closest side first, other side if needed
-		auto best = search(f, p);
-		if (bsec < best.first)
-			best = min(best, search(s, p));
-		return best;
-	}
-
-	// find nearest point to a point, and its squared distance
-	// (requires an arbitrary operator< for Point)
-	pair<T, P> nearest(const P& p) {
-		return search(root, p);
-	}
-};
+    tree[M].R = build_tree(M+1, R, dep+1);
+    if (tree[M].R) {
+      tree[M].x1 = min(tree[M].x1, tree[M].R->x1);
+      tree[M].x2 = max(tree[M].x2, tree[M].R->x2);
+      tree[M].y1 = min(tree[M].y1, tree[M].R->y1);
+      tree[M].y2 = max(tree[M].y2, tree[M].R->y2);
+    }
+    return tree+M;
+  }
+  int touch(Nd* r, int x, int y, LL d2){
+    LL dis = sqrt(d2)+1;
+    if (x<r->x1-dis || x>r->x2+dis ||
+        y<r->y1-dis || y>r->y2+dis)
+      return 0;
+    return 1;
+  }
+  void nearest(Nd* r, int x, int y, int &mID, LL &md2){
+    if (!r || !touch(r, x, y, md2)) return;
+    LL d2 = dis2(r->x, r->y, x, y);
+    if (d2 < md2 || (d2 == md2 && mID < r->id)) {
+      mID = r->id; md2 = d2;
+    }
+    // search order depends on split dim
+    if ((r->f == 0 && x < r->x) ||
+        (r->f == 1 && y < r->y)) {
+      nearest(r->L, x, y, mID, md2);
+      nearest(r->R, x, y, mID, md2);
+    } else {
+      nearest(r->R, x, y, mID, md2);
+      nearest(r->L, x, y, mID, md2);
+    }
+  }
+  int query(int x, int y) {
+    int id = 1029384756;
+    LL d2 = 102938475612345678LL;
+    nearest(root, x, y, id, d2);
+    return id;
+  }
+}tree;
