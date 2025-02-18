@@ -1,8 +1,31 @@
+# path to the bits/stdc++.h for fast compilation
+# $ g++ a.cpp -H 2> 2>(head)
+
+# Slow compilation
 c() {
- g++ $1.cpp -o $1 -std=c++17 -Wall -Wshadow \
- -fsanitize=address,undefined -g -DDEBUG -DLOCAL
+	g++ $1.cpp -o $1 -std=gnu20 -Wall -Wshadow -Wextra \
+	-fsanitize=undefined,address -ggdb3 -DLOCAL -I$HOME/bits
 }
-nc() { g++ $1.cpp -o $1 -std=c++17 -O3; }
+
+# Quick compilation
+nc() {
+	g++ $1.cpp -o $1 -std=gnu20 -O2 -g -static
+}
+
+# Time and memory usage
 r() { command time -f "%Us %M KB" ./$1; }
-libhash() { cat $1.cpp | cpp -dD -P -fpreprocessed | \
-tr -d '[:space:]'| md5sum |cut -c-6; }
+
+# Hash of a file, ignores all whitespaces and comments
+haszuj() {
+	cpp -dD -P -fpreprocessed $1.cpp | tr -d '[:space:]' | \
+	md5sum | cut -c-6
+}
+
+# Tester script given brut and gen in the folder
+testuj() {
+	for ((i=0;;i++)); do
+		./gen > $1.test
+		diff -bwq <(./$1 < $1.test) <(./brute < $1.test) || break
+		echo "OK $i"
+	done
+}

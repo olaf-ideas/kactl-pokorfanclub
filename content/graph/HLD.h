@@ -1,6 +1,6 @@
 /**
- * Author: Benjamin Qi, Oleksandr Kulkov, chilli
- * Date: 2020-01-12
+ * Author: kobor, Benjamin Qi, Oleksandr Kulkov, chilli
+ * Date: 2024-08-23
  * License: CC0
  * Source: https://codeforces.com/blog/entry/53170, https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/Trees%20(10)/HLD%20(10.3).h
  * Description: Decomposes a tree into vertex disjoint heavy paths and light
@@ -15,51 +15,35 @@
  */
 #pragma once
 
-#include "../data-structures/LazySegmentTree.h"
-
-template <bool VALS_EDGES> struct HLD {
-	int N, tim = 0;
-	vector<vi> adj;
-	vi par, siz, rt, pos;
-	Node *tree;
-	HLD(vector<vi> adj_)
-		: N(sz(adj_)), adj(adj_), par(N, -1), siz(N, 1),
-		  rt(N),pos(N),tree(new Node(0, N)){ dfsSz(0); dfsHld(0); }
+struct HLD {	// 0-indexed
+	int N, tim = 0, VALS_EDGES = 0;	// change to 1 if needed
+	vector<vi> adj; vi par, sz, depth, rt, pos;
+	HLD(vector<vi> _adj) : N(SZ(_adj)), adj(_adj), par(N, -1),
+		sz(N, 1), depth(N), rt(N), pos(N) { dfsSz(0); dfsHld(0); }
 	void dfsSz(int v) {
-		if (par[v] != -1) adj[v].erase(find(all(adj[v]), par[v]));
-		for (int& u : adj[v]) {
-			par[u] = v;
-			dfsSz(u);
-			siz[v] += siz[u];
-			if (siz[u] > siz[adj[v][0]]) swap(u, adj[v][0]);
+		if(par[v] != -1) adj[v].erase(find(all(adj[v]), par[v]));
+		for(int &u: adj[v]) {
+			par[u] = v, depth[u] = depth[v] + 1;
+			dfsSz(u); sz[v] += sz[u];
+			if(sz[u] > sz[adj[v][0]]) swap(u, adj[v][0]);
 		}
 	}
 	void dfsHld(int v) {
 		pos[v] = tim++;
-		for (int u : adj[v]) {
-			rt[u] = (u == adj[v][0] ? rt[v] : u);
-			dfsHld(u);
+		for(int u: adj[v]) {
+			rt[u] = (u == adj[v][0] ? rt[v] : u); dfsHld(u); }
+	}
+	vector<pii> path(int u, int v) {
+		vector<pii> paths;
+		for(; rt[u] != rt[v]; v = par[rt[v]]) {
+			if(depth[rt[u]] > depth[rt[v]]) swap(u, v);
+			paths.pb({pos[rt[v]], pos[v]});
 		}
+		if(depth[u] > depth[v]) swap(u, v);
+		paths.pb({pos[u] + VALS_EDGES, pos[v]});
+		return paths;
 	}
-	template <class B> void process(int u, int v, B op) {
-		for (; rt[u] != rt[v]; v = par[rt[v]]) {
-			if (pos[rt[u]] > pos[rt[v]]) swap(u, v);
-			op(pos[rt[v]], pos[v] + 1);
-		}
-		if (pos[u] > pos[v]) swap(u, v);
-		op(pos[u] + VALS_EDGES, pos[v] + 1);
-	}
-	void modifyPath(int u, int v, int val) {
-		process(u, v, [&](int l, int r) { tree->add(l, r, val); });
-	}
-	int queryPath(int u, int v) { // Modify depending on problem
-		int res = -1e9;
-		process(u, v, [&](int l, int r) {
-				res = max(res, tree->query(l, r));
-		});
-		return res;
-	}
-	int querySubtree(int v) { // modifySubtree is similar
-		return tree->query(pos[v] + VALS_EDGES, pos[v] + siz[v]);
+	pii subtree(int v) {
+		return {pos[v] + VALS_EDGES, pos[v] + sz[v] - 1};
 	}
 };
