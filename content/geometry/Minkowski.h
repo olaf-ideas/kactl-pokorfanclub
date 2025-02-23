@@ -1,34 +1,27 @@
 /**
- * Author: Krzysztof Potępa
- * Date: 2022-10-27
- * License: ???
- * Source: ???
- * Description: Computes Minkowski sum of two convex polygons in ccw order.
- * Vertices are required to be in ccw order.
- * Time: O(n+m)
- * Status: Stress-tested
+ * Author: kobor
+ * Date: 2024-04-21
+ * Source: https://cp-algorithms.com/geometry/minkowski.html
+ * Description: Computes the Minkowski sum of two convex polygons.
+ *  Distance between two convex polygons can be computed by finding the closest edge of P - Q to the origin. 
+ * Time: O(N)
+ * Status: tested on a few tasks
  */
-
 #pragma once
 
 #include "Point.h"
-#include "Angle.h"
 
-P edgeSeq(vector<P> p, vector<P>& edges) {
-	int i = 0, n = sz(p);
-	rep(j, n) if (tie(p[i].y, p[i].x) > tie(p[j].y, p[j].x)) i = j;
-	rep(j, n) edges.pb(p[(i+j+1)%n] - p[(i+j)%n]);
-	return p[i];
-}
-
-vector<P> hullSum(vector<P> A, vector<P> B) {
-	vector<P> sum, e1, e2, es(sz(A) + sz(B));
-	P pivot = edgeSeq(A, e1) + edgeSeq(B, e2);
-	merge(all(e1), all(e2), es.begin(), [&](P a, P b){
-		return Angle(a.x, a.y) < Angle(b.x,b.y);
-	});
-	sum.pb(pivot);
-	for(auto e: es) sum.pb(sum.back() + e);
-	sum.pop_back();
-	return sum; //can have collinear vertices!
+template<class P>
+vector<P> minkowski(vector<P> a, vector<P> b) {
+	rotate(a.begin(), min_element(all(a)), a.end());
+	rotate(b.begin(), min_element(all(b)), b.end());
+	FOR(i, 0, 2) a.pb(a[i]), b.pb(b[i]);
+	vector<P> res;
+	for(int i = 0, j = 0; i < SZ(a) - 2 || j < SZ(b) - 2; ) {
+		res.pb(a[i] + b[j]);
+		auto cross = (a[i + 1] - a[i]).cross(b[j + 1] - b[j]);
+		if(cross >= 0 && i < SZ(a)) i++;
+		if(cross <= 0 && j < SZ(b)) j++;
+	}
+	return res;
 }

@@ -31,19 +31,19 @@ struct PersistentTree {
 	};
 	vector<Node> t; int max_n;
 	PersistentTree(int _max_n) : max_n(_max_n) {}
-	PersistentTree(vector<T> vals) : max_n(SZ(vals) - 1) {
+	PersistentTree(vector<T> vals) : max_n(sz(vals) - 1) {
 		function<int(int, int)> build = [&](int l, int r) {
-			if(l == r) { t.pb(Node(vals[l])); return SZ(t)-1; }
+			if(l == r) { t.pb(Node(vals[l])); return sz(t)-1; }
 			int mid = (l + r) / 2; Node a;
 			a.ch[0] = build(l, mid), a.ch[1] = build(mid + 1, r);
 			a.pull(t[a.ch[0]], t[a.ch[1]]);
-			t.pb(a); return SZ(t) - 1;
+			t.pb(a); return sz(t) - 1;
 		};
 		build(0, max_n);
 	}
-	int copy(int v) { t.pb(~v ? t[v]:Node()); return SZ(t)-1; }
+	int copy(int v) { t.pb(~v ? t[v]:Node()); return sz(t)-1; }
 	void push(int v, int len) {
-		FOR(i, 0, 2) {
+		rep(i, 0, 2) {
 			t[v].ch[i] = copy(t[v].ch[i]);
 			t[t[v].ch[i]].apply(t[v].add, len / 2);
 		}
@@ -69,7 +69,7 @@ struct PersistentTree {
 		v = copy(v); add(v, l, r, val, 0, max_n);
 	}
 	Node query(int v, int l, int r) {
-		int sz = SZ(t);
+		int sz = sz(t);
 		v = copy(v); Node res = query(v, l, r, 0, max_n);
 		t.resize(sz); return res;
 	}

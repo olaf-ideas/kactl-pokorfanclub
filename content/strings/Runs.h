@@ -11,7 +11,7 @@
 #pragma once
 
 vector<array<int, 3>> solve(string s) {
-	int N = SZ(s); SuffixArray A, B;
+	int N = sz(s); SuffixArray A, B;
 	A.init(s); reverse(all(s)); B.init(s);
 	vector<array<int, 3>> runs;
 	for(int p = 1; 2*p <= N; ++p) { // do in O(N/p) for period p

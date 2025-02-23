@@ -8,6 +8,7 @@ using namespace std;
 #define endl '\n'
 #define st first
 #define nd second
+#define mp make_pair
 #define pb push_back
 #define eb emplace_back
 #define sz(x) (int)(x).size()
@@ -34,17 +35,8 @@ using vi = vector<int>;
 
 const int inf = 1e9+7;
 
-void solve() {
-	
-}
-
 signed main() {
 	cin.tie(0)->sync_with_stdio(0);
-
-	int tt = 1;
-	cin >> tt;
-	while (tt--)
-		solve();
 
 	return 0;
 }

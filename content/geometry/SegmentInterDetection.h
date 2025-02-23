@@ -1,122 +1,62 @@
 /**
- * Author: Stanford
- * Date: Unknown
- * Source: Stanford Notebook
- * Description: KD-tree (2d, can be extended to 3d)
- * Status: Tested on excellentengineers
+ * Author: kobor
+ * Date: 2024-07-12
+ * License: CC0
+ * Description: Finds one of segments intersections.
+ *	You should change dirSeg's comparator, to compare segments at their left end.
+ * Time: $O(N \log N)$
+ * Status: tested on Timus:1469
  */
+#pragma once
 
-int cmp(int x, int y) {
-    if (x == y) return 0;
-    if (x < y) return -1;
-    return 1;
-}
-struct Point {
-    int x, y;
+#include "SegmentIntersection.h"
 
-    Point() { x = y = 0; }
-    Point(int x, int y) : x(x), y(y) {}
-
-    Point operator - (const Point& a) const {
-        return Point(x - a.x, y - a.y);
-    }
-    int operator % (const Point& a) const {
-        return x*a.y - y*a.x;
-    }
-};
-istream& operator >> (istream& cin, Point& p) {
-    cin >> p.x >> p.y;
-    return cin;
-}
-
-struct Segment {
-    Point p, q;
-    int id;
-
-    double get_y(int x) const {
-        if (p.x == q.x) return p.y;
-        return p.y + (q.y - p.y) * (x - p.x) / (double) (q.x - p.x);
-    }
-};
-istream& operator >> (istream& cin, Segment& s) {
-    cin >> s.p >> s.q;
-    return cin;
-}
-
-bool intersect1d(int l1, int r1, int l2, int r2) {
-    if (l1 > r1) swap(l1, r1);
-    if (l2 > r2) swap(l2, r2);
-
-    return max(l1, l2) <= min(r1, r2);
-}
-int ccw(Point a, Point b, Point c) {
-    return cmp((b - a) % (c - a), 0);
-}
-
-bool intersect(const Segment& a, const Segment& b) {
-    return intersect1d(a.p.x, a.q.x, b.p.x, b.q.x)
-        && intersect1d(a.p.y, a.q.y, b.p.y, b.q.y)
-        && ccw(a.p, a.q, b.p) * ccw(a.p, a.q, b.q) <= 0
-        && ccw(b.p, b.q, a.p) * ccw(b.p, b.q, a.q) <= 0;
-}
-
-bool operator < (const Segment& a, const Segment& b) {
-    int x = max(min(a.p.x, a.q.x), min(b.p.x, b.q.x));
-    return a.get_y(x) < b.get_y(x) - 1e-9;
-}
-
-struct Event {
-    int x;
-    int tp, id;
-
-    Event() {}
-    Event(int x, int tp, int id) : x(x), tp(tp), id(id) {}
-
-    bool operator < (const Event& e) const {
-        if (x != e.x) return x < e.x;
-        return tp > e.tp;
-    }
+template<class P>
+struct dirSeg {
+	P s, e; int rev;
+	dirSeg(P _s, P _e) : s(_s), e(_e), rev(0) {
+		if(e < s) swap(s, e), rev = 1;
+	}
+	P getY(P X) {	// takes x * 2, returns y * 2 as a fraction
+		P d = (e - s);
+		return !sgn(d.x) ? P(s.y+e.y, 1) : P(d.cross(s*2-X), d.x);
+	}
+	int cmp(dirSeg b) {	// needs ~64 * M^3 !
+		P X(max(s.x, b.s.x) + min(e.x, b.e.x), 0);
+		return sgn(getY(X).cross(b.getY(X)));
+	}
 };
 
-set<Segment> s;
-vector< set<Segment> :: iterator> where;
-set<Segment> :: iterator get_prev(set<Segment>::iterator it) {
-    return it == s.begin() ? s.end() : --it;
-}
-
-set<Segment> :: iterator get_next(set<Segment>::iterator it) {
-    return ++it;
-}
-
-pair<int,int> solve(const vector<Segment>& a) {
-    int n = SZ(a);
-    vector<Event> e;
-    REP(i,n) {
-        e.push_back(Event(min(a[i].p.x, a[i].q.x), +1, i));
-        e.push_back(Event(max(a[i].p.x, a[i].q.x), -1, i));
-    }
-    sort(ALL(e));
-
-    s.clear();
-    where.resize(SZ(a));
-    REP(i,SZ(e)) {
-        int id = e[i].id;
-        if (e[i].tp == +1) {
-            set<Segment>::iterator next = s.lower_bound(a[id]), prev = get_prev(next);
-            if (next != s.end() && intersect(*next, a[id])) {
-                return make_pair(next->id, id);
-            }
-            if (prev != s.end() && intersect(*prev, a[id])) {
-                return make_pair(prev->id, id);
-            }
-            where[id] = s.insert(next, a[id]);
-        } else {
-            set<Segment>::iterator next = get_next(where[id]), prev = get_prev(where[id]);
-            if (next != s.end() && prev != s.end() && intersect(*next, *prev)) {
-                return make_pair(prev->id, next->id);
-            }
-            s.erase(where[id]);
-        }
-    }
-    return make_pair(-1, -1);
+template<class P>
+pii segmentsIntersect(vector<pair<P, P>> segments) {
+	vector<tuple<P, int, int>> eve; // {point, event_type, id}
+	vector<dirSeg<P>> segs;
+	for(auto &[s, e]: segments) {
+		dirSeg<P> seg(s, e);
+		eve.pb({seg.s,0,sz(segs)}), eve.pb({seg.e,1,sz(segs)});
+		segs.pb(seg);
+	}
+	sort(all(eve));
+	auto inter = [](auto a, auto b) {
+		return sz(segInter(a->st.s, a->st.e, b->st.s, b->st.e));
+	};
+	auto cmp = [](auto a, auto b) {
+		return mp(a.st.cmp(b.st), a.nd) < mp(0, b.nd);
+	};
+	set<pair<dirSeg<P>, int>, decltype(cmp)> s(cmp);
+	for(auto &[_, eve_tp, id]: eve) {
+		if(eve_tp == 0) {	// add segment
+			auto it = s.insert({segs[id], id}).st;
+			if(next(it) != s.end() && inter(it, next(it)))
+				return {it->nd, next(it)->nd};
+			if(it != s.begin() && inter(it, prev(it)))
+				return {it->nd, prev(it)->nd};
+		}
+		if(eve_tp == 1) {	// del segment
+			auto it = s.erase(s.find({segs[id], id}));
+			if(it!=s.begin() && it!=s.end() && inter(it, prev(it)))
+				return {it->nd, prev(it)->nd};
+		}
+	}
+	return {-1, -1};
 }

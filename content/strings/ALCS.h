@@ -28,9 +28,9 @@ struct ALCS {
 		int n = sz(A), m = sz(B);
 		ih.resize(n + 1, vi(m + 1));
 		iota(all(ih[0]), 0);
-		fwd(l, 1, n + 1) {
+		rep(l, 1, n + 1) {
 			int iv = 0;
-			fwd(j, 1, m + 1) {
+			rep(j, 1, m + 1) {
 				if (A[l - 1] != B[j - 1]) {
 					ih[l][j] = max(ih[l - 1][j], iv);
 					iv = min(ih[l - 1][j], iv);
@@ -48,7 +48,7 @@ struct ALCS {
 	// or compute all answers for fixed `i`.
 	int operator()(int i, int j, int k) {
 		int ret = 0;
-		fwd(q, j, k) ret += (ih[i][q + 1] <= j);
+		rep(q, j, k) ret += (ih[i][q + 1] <= j);
 		return ret;
 	}
 
@@ -73,7 +73,7 @@ struct ALCS {
 	// L[k] = |LCS(A[:i), B[j:k))|; time: O(|B|)
 	vi row(int i, int j) {
 		vi ret(sz(B) + 1);
-		fwd(k, j + 1, sz(ret)) ret[k] = ret[k - 1] + (ih[i][k] <= j);
+		rep(k, j + 1, sz(ret)) ret[k] = ret[k - 1] + (ih[i][k] <= j);
 		return ret;
 	}
 };
