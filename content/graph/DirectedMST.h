@@ -23,17 +23,14 @@ struct Node { /// lazy skew heap node
 		if (l) l->delta += delta;
 		if (r) r->delta += delta;
 		delta = 0;
-	}
-	Edge top() { prop(); return key; }
-};
-Node *merge(Node *a, Node *b) {
+	} Edge top() { prop(); return key; }
+}; Node *merge(Node *a, Node *b) {
 	if (!a || !b) return a ?: b;
 	a->prop(), b->prop();
 	if (a->key.w > b->key.w) swap(a, b);
 	swap(a->l, (a->r = merge(b, a->r)));
 	return a;
-}
-void pop(Node*& a) { a->prop(); a = merge(a->l, a->r); }
+} void pop(Node*& a) { a->prop(); a = merge(a->l, a->r); }
 
 pair<ll, vi> dmst(int n, int r, vector<Edge>& g) {
 	RollbackUF uf(n);
@@ -59,17 +56,11 @@ pair<ll, vi> dmst(int n, int r, vector<Edge>& g) {
 				while (uf.join(u, w));
 				u = uf.find(u), heap[u] = cyc, seen[u] = -1;
 				cycs.push_front({u, time, {&Q[qi], &Q[end]}});
-			}
-		}
-		rep(i,0,qi) in[uf.find(Q[i].b)] = Q[i];
-	}
-
-	for (auto& [u,t,comp] : cycs) { // restore sol (optional)
+			}} rep(i,0,qi) in[uf.find(Q[i].b)] = Q[i];
+	} for (auto& [u,t,comp] : cycs) { // restore sol (optional)
 		uf.rollback(t);
 		Edge inEdge = in[u];
 		for (auto& e : comp) in[uf.find(e.b)] = e;
 		in[uf.find(inEdge.b)] = inEdge;
-	}
-	rep(i,0,n) par[i] = in[i].a;
-	return {res, par};
-}
+	} rep(i,0,n) par[i] = in[i].a; // restore sol (end)
+	return {res, par}; }

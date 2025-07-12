@@ -18,14 +18,12 @@ vi dominators(vector<vi>& G, int root) {
 			for (auto e :  G[v])
 				in[e].pb(v), f(f, e, v);
 		}
-	};
-	auto find = [&](auto f, int v) -> pii {
+	}; auto find = [&](auto f, int v) -> pii {
 		if (anc[v] == -1) return {best[v], v};
 		int b; tie(b, anc[v]) = f(f, anc[v]);
 		if (sdom[b] < sdom[best[v]]) best[v] = b;
 		return {best[v], anc[v]};
-	};
-	rdom[root] = idom[root] = root;
+	}; rdom[root] = idom[root] = root;
 	iota(all(best), 0); dfs(dfs, root, -1);
 	rep(i, sz(ord)) {
 		int v = ord[sz(ord)-i-1], b = pre[v];
@@ -35,7 +33,6 @@ vi dominators(vector<vi>& G, int root) {
 		for (auto u : bucket[v]) rdom[u]=find(find,u).st;
 		sdom[v] = b; anc[v] = par[v];
 		bucket[ord[sdom[v]]].pb(v);
-	}
-	for (auto v : ord) idom[v] = (rdom[v] == v ?
+	} for (auto v : ord) idom[v] = (rdom[v] == v ?
 		ord[sdom[v]] : idom[rdom[v]]);
 	return idom; }

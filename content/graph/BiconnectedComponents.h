@@ -33,5 +33,4 @@ void dfs(int v, int p){ st.pb(v); tin[v] = low[v] = tim++;
           edgs[sz(bls)].pb(ste.back()); ste.pop_back();
         } bls.pb({v});
         while(bls.back().back() != u){ bl[st.back()] = sz(bls)-1;
-          bls.back().pb(st.back()); st.pop_back();
-}}}}}
+          bls.back().pb(st.back()); st.pop_back(); }}}}}
