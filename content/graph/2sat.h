@@ -23,9 +23,7 @@ struct TwoSat {
 	int N;
 	vector<vi> gr;
 	vi values; // 0 = false, 1 = true
-
 	TwoSat(int n = 0) : N(n), gr(2*n) {}
-
 	int addVar() { // (optional)
 		gr.emplace_back();
 		gr.emplace_back();
