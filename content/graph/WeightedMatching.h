@@ -40,8 +40,6 @@ pair<int, vi> hungarian(const vector<vi> &a) {
 		while (j0) { // update alternating path
 			int j1 = pre[j0];
 			p[j0] = p[j1], j0 = j1;
-		}
-	}
-	rep(j,1,m) if (p[j]) ans[p[j] - 1] = j - 1;
+		}} rep(j,1,m) if (p[j]) ans[p[j] - 1] = j - 1;
 	return {-v[0], ans}; // min cost
 }
