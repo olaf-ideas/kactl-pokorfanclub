@@ -34,13 +34,10 @@ vi edgeColoring(int N, vector<pii> eds) {
 			adj[left][e] = u;
 			adj[right][e] = -1;
 			free[right] = e;
-		}
-		adj[u][d] = fan[i];
+		} adj[u][d] = fan[i];
 		adj[fan[i]][d] = u;
 		for (int y : {fan[0], u, end})
 			for (int& z = free[y] = 0; adj[y][z] != -1; z++);
-	}
-	rep(i,0,sz(eds))
+	} rep(i,0,sz(eds))
 		for (tie(u, v) = eds[i]; adj[u][ret[i]] != v;) ++ret[i];
-	return ret;
-}
+	return ret; }

@@ -34,14 +34,12 @@ struct SplayTree {
 		auto dir = [&](int x) {
 			int u = t[x].p;
 			return t[u].ch[0] == x ? 0 : t[u].ch[1] == x ? 1 : -1;
-		};
-		auto rotate = [&](int x) {
+		}; auto rotate = [&](int x) {
 			int y = t[x].p, z = t[y].p, dx = dir(x), dy = dir(y);
 			set(y, dx, t[x].ch[!dx]), set(x, !dx, y);
 			if(~dy) set(z, dy, x);
 			t[x].p = z;
-		};
-		for(push(v); ~dir(v); ) {
+		}; for(push(v); ~dir(v); ) {
 			int y = t[v].p, z = t[y].p;
 			push(z), push(y), push(v);
 			int dv = dir(v), dy = dir(y);
@@ -58,8 +56,7 @@ struct LinkCut : SplayTree {	// 1-indexed
 			t[u].vir += t[ox].sub;
 			t[u].vir -= t[x].sub;
 			ox = x, pull(u);
-		}
-		return splay(v), x;
+		} return splay(v), x;
 	} void reroot(int v) { access(v), t[v].flip ^= 1, push(v); }
 	void link(int u, int v) {
 		reroot(u), access(v);
