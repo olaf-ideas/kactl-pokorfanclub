@@ -4,7 +4,7 @@
  * License: CC0
  * Source: Folklore
  * Description: Utility for functional graphs. 
- *  Computes following tables: cs - vertices of connected comps,
+ *  Computes following tables: cs - vertices of ith comp's cycle,
  *  ci - index of comp, ti - index of tree in comp, idx - same
  *  as ti but -1 if not on cycle (i.e. not root), cl - length of
  *  ith component's cycle
@@ -26,7 +26,7 @@ void dfs(int v, int p){
     if(u == p) continue;
     dfs(u, v);
   } // tout[v] = tim++; // lca
-} void prep(){
+} void init(){
   fill(ci,ci+n,-1); fill(id,id+n,-1);
   rep(i,0,n) adjr[adj[i]].push_back(i);
   rep(i,0,n) if(!vis[i]) {
