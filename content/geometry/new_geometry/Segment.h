@@ -26,10 +26,10 @@ vector<P> intersect(P a, P b, P c, P d) {
     if (onSegment(c,d,b)) s.insert(b);
     return {all(s)};
 }
-D seg_dist(P a, P b, P p) {
+D segDist(P a, P b, P p) {
     if (dot(b-a, p-a) < 0)
         return dist(a, p);
     if (dot(a-b, p-b) < 0)
         return dist(b, p);
-    return line_dist(a, b, p);
+    return lineDist(a, b, p);
 }
