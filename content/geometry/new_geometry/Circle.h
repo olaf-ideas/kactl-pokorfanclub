@@ -74,21 +74,22 @@ vector<P> circleLine(P c, D r, P a, P b) {
 }
 
 pair<P,D> circumCircle(P a, P b, P c) {
-    P o = intersect((a+b)/2,rot90(b-a),(a+c)/2,rot90(c-a));
+    P v = c-a, w = b-a;
+    P o = a + rot90(v*len2(w)-w*len2(v))/det(v,w)/2;
     return {o,dist(a,o)}; 
 }
 
-pair<P, D> enclosingCircle(vector<P> pts) {
-	shuffle(all(pts), mt19937(2137));
+pair<P, D> enclosingCircle(vector<P> p) {
+	shuffle(all(p), mt19937(2137));
 	P o = pts[0];
 	D r = 0, EPS = 1 + 1e-8;
-	rep(i,0,sz(ps)) if (dist(o, pts[i]) > r * EPS) {
-		o = pts[i], r = 0;
-		rep(j,0,i) if (dist(o, pts[j]) > r * EPS) {
-			o = (pts[i] + pts[j]) / 2;
-			r = dist(o, pts[i]);
-            rep(k,0,j) if (dist(o, pts[k]) > r * EPS) {
-                tie(o, r) = circumCircle(pts[i], pts[j], pts[k]);
+	rep(i,0,sz(p)) if (dist(o, p[i]) > r * EPS) {
+		o = p[i], r = 0;
+		rep(j,0,i) if (dist(o, p[j]) > r * EPS) {
+			o = (p[i] + p[j]) / 2;
+			r = dist(o, p[i]);
+            rep(k,0,j) if (dist(o, p[k]) > r * EPS) {
+                tie(o, r) = circumCircle(p[i], p[j], p[k]);
 			}
 		}
 	}
