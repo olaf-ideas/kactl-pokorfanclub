@@ -11,15 +11,15 @@
 #pragma once
 
 #include "Point.h"
-#include "3dHull.h"
+#include "Hull3D.h"
 
 template<class P, class F>
 void delaunay(vector<P>& ps, F trifun) {
-	if (sz(ps) == 3) { int d = (ps[0].cross(ps[1], ps[2]) < 0);
+	if (sz(ps) == 3) { int d = (det(ps[0], ps[1], ps[2]) < 0);
 		trifun(0,1+d,2-d); }
 	vector<P3> p3;
-	for (P p : ps) p3.emplace_back(p.x, p.y, p.dist2());
-	if (sz(ps) > 3) for(auto t:hull3d(p3)) if ((p3[t.b]-p3[t.a]).
-			cross(p3[t.c]-p3[t.a]).dot(P3(0,0,1)) < 0)
+	for (P p : ps) p3.emplace_back(p.x, p.y, dot(p,p));
+	if (sz(ps) > 3) for(auto t:hull3d(p3)) if (det(p3[t.b]-p3[t.a],
+			p3[t.c]-p3[t.a]).z < 0)
 		trifun(t.a, t.c, t.b);
 }

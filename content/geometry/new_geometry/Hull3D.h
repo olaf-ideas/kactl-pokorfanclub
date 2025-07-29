@@ -12,8 +12,6 @@
 
 #include "Point3D.h"
 
-typedef Point3D<double> P3;
-
 struct PR {
 	void ins(int x) { (a == -1 ? a : b) = x; }
 	void rem(int x) { (a == x ? a : b) = -1; }
@@ -29,8 +27,8 @@ vector<F> hull3d(const vector<P3>& A) {
 #define E(x,y) E[f.x][f.y]
 	vector<F> FS;
 	auto mf = [&](int i, int j, int k, int l) {
-		P3 q = (A[j] - A[i]).cross((A[k] - A[i]));
-		if (q.dot(A[l]) > q.dot(A[i]))
+		P3 q = det(A[j] - A[i], A[k] - A[i]);
+		if (dot(q,A[l]) > dot(q,A[i]))
 			q = q * -1;
 		F f{q, i, j, k};
 		E(a,b).ins(k); E(a,c).ins(j); E(b,c).ins(i);
@@ -42,7 +40,7 @@ vector<F> hull3d(const vector<P3>& A) {
 	rep(i,4,sz(A)) {
 		rep(j,0,sz(FS)) {
 			F f = FS[j];
-			if(f.q.dot(A[i]) > f.q.dot(A[f.a])) {
+			if(dot(f.q,A[i]) > dot(f.q,A[f.a])) {
 				E(a,b).rem(f.c);
 				E(a,c).rem(f.b);
 				E(b,c).rem(f.a);
@@ -57,7 +55,7 @@ vector<F> hull3d(const vector<P3>& A) {
 			C(a, b, c); C(a, c, b); C(b, c, a);
 		}
 	}
-	for (F& it : FS) if ((A[it.b] - A[it.a]).cross(
-		A[it.c] - A[it.a]).dot(it.q) <= 0) swap(it.c, it.b);
+	for (F& it : FS) if (dot(det(A[it.b] - A[it.a]
+		A[it.c] - A[it.a]),it.q) <= 0) swap(it.c, it.b);
 	return FS;
 };

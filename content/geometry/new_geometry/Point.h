@@ -36,3 +36,7 @@ P rotate(P v, D alpha) {
 }
 D angle(P v) { return atan2(v.y, v.x); }
 int side(P a, P b, P c) { return sgn(det(a,b,c)); }
+
+int half(P v) { return sgn(v.y)>0||(sgn(v.y)==0&&sgn(v.x)==0); }
+bool angle_cmp(P a, P b) {
+    return half(a)!=half(b)?half(a)<half(b):sgn(det(a,b))>0; }

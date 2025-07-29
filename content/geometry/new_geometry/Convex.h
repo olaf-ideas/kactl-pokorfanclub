@@ -9,7 +9,7 @@
 
 #include "Segment.h"
 
-vector<P> convex_hull(vector<P> pts) {
+vector<P> convexHull(vector<P> pts) {
 	sort(all(pts));
 	pts.erase(unique(all(pts)), end(pts));
 	if (sz(pts) <= 2) return pts;
@@ -53,6 +53,6 @@ int tangent(vector<P> const& q, P p, int dir, int l, int r) {
 			else r = m;}
 	}
 	return side(p,q[l],q[r])==dir?l:r;}
-pii tangents(vector<P> const& poqly, P p) {
+pii tangents(vector<P> const& q, P p) {
 	return {tangent(q,p,-1,0,sz(q)-1),
             tangent(q,p,+1,0,sz(q)-1)};}
