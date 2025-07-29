@@ -37,13 +37,14 @@ D intersectArea(P c, D r, vector<P> poly) {
     auto arg = [&](P p, P q) { return atan2(det(p,q), dot(p,q)); };
     auto tri = [&](P p, P q) {
         P w = q-p;
+        auto r2 = r*r/2;
         auto a = dot(w,p)/dot(w,w), b = (dot(p,p)-r*r)/dot(w,w);
         auto d = a*a-b;
-        if (d <= 0) return arg(p,q)*r*r/2;
+        if (d <= 0) return arg(p,q)*r2;
         auto s = fmax(0,-a-sqrt(d)), t = fmin(1, -a+sqrt(d));
-        if (t < 0 || 1 <= s) return r*r*arg(p,q)/2;
+        if (t < 0 || 1 <= s) return arg(p,q)*r2;
         P u = p+s*w, v = p+t*w;
-        return arg(p,u)*r*r/2+det(u,v)/2+arg(v,q)*r*r/2;
+        return arg(p,u)*r2+det(u,v)/2+arg(v,q)*r2;
     };
     D res = 0;
     rep(i,0,sz(poly))
@@ -66,7 +67,7 @@ vector<pair<P,P>> tangents(P a, D r, P b, D R) {
 
 vector<P> circleLine(P c, D r, P a, P b) {
     P ab = b-a, p = a+ab*dot(c-a,ab)/len2(ab);
-    D s = det(a,b,c), h2 = r*r*-s*s/len2(ab);
+    D s = det(a,b,c), h2 = r*r-s*s/len2(ab);
     if (h2 < 0) return {};
     if (h2 == 0) return {p};
     P h = unit(ab) * sqrt(h2);
@@ -102,13 +103,13 @@ D circlesUnionArea(vector<pair<P, D>> c) {
 	for(auto &[p, r]: c) {
 		int cnt = 0, cover = 0;
 		vector<pair<D, int>> eve = {{-pi, 0}};
-		for(auto &[q, s]: c) if(make_pair(p, r) != make_pair(q, s)) {
-			D dst = (p - q).dist();
-			if(r + dst <= s) { cover = 1; break; }
-			pair<P, P> inters;
-			if(!circleInter(p, q, r, s, &inters)) continue;
-			D le = angle(inters.st - p);
-			D re = angle(inters.nd - p);
+		for(auto &[q, s]: c) if(mp(p, r) != mp(q, s)) {
+			D dst = len(p-q);
+            if(r + dst <= s) { cover = 1; break; }
+            vector<P> inters=inter(p,r,q,s);
+            if (inters.empty()) continue;
+			D le = angle(inters[0] - p);
+			D re = angle(inters[1] - p);
 			cnt += le > re;
 			eve.pb({le, 1}), eve.pb({re, -1});
 		}
@@ -118,9 +119,9 @@ D circlesUnionArea(vector<pair<P, D>> c) {
 		D loc = 0;
 		rep(i, 1, sz(eve)) {
 			if(!cnt) {
-				T a = eve[i-1].st, b = eve[i].st;
+				D a = eve[i-1].st, b = eve[i].st;
 				loc += r * (b - a) +
-					p.cross(P(cos(b)-cos(a), sin(b)-sin(a)));
+                    det(p, P(cos(b)-cos(a), sin(b)-sin(a)));
 			}
 			cnt += eve[i].nd;
 		}

@@ -35,3 +35,4 @@ P rotate(P v, D alpha) {
     return {v.x*c-v.y*s, v.x*s+v.y*c};
 }
 D angle(P v) { return atan2(v.y, v.x); }
+int side(P a, P b, P c) { return sgn(det(a,b,c)); }

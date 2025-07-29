@@ -12,7 +12,7 @@
 #include "Line.h"
 
 bool onSegment(P a, P b, P p) {
-    return sgn(det(a, b, p))==0 && sgn(dot(a-p, b-p))<=0;
+    return side(a, b, p)==0 && sgn(dot(a-p, b-p))<=0;
 }
 vector<P> intersect(P a, P b, P c, P d) {
     auto da = det(c,d,a), db = det(c,d,b),

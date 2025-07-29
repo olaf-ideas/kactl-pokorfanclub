@@ -27,7 +27,7 @@ P polygonCenter(vector<P> const& p) {
         res = res+(p[i]+p[j])*det(p[i],p[j]);
         area += det(v[i], v[j]);
     }
-    return res / area / 3;
+    return res/area/3;
 }
 
 vector<P> polygonCut(vector<P> const& p, P a, P b) {
@@ -80,11 +80,11 @@ D triangulate(vector<P> const& p) {
     vi next(n);
     rep(i,0,n-1) next[i] = i+1;
     auto is_ear = [&](int i, int j, int k) {
-        if (sgn(det(p[i], p[j], p[k])) <= 0) return false;
+        if (side(p[i], p[j], p[k]) <= 0) return false;
         for (int l = next[k]; l != i; l = next[l])
-            if (sgn(det(p[l], p[i], p[j])) >= 0 && 
-                sgn(det(p[l], p[j], p[k])) >= 0 && 
-                sgn(det(p[l], p[k], p[i])) >= 0) return false;
+            if (side(p[l], p[i], p[j]) >= 0 && 
+                side(p[l], p[j], p[k]) >= 0 && 
+                side(p[l], p[k], p[i]) >= 0) return false;
         return true;
     };
     D area = 0;
