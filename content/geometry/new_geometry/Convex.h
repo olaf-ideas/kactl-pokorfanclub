@@ -24,8 +24,8 @@ vector<P> convexHull(vector<P> pts) {
 	}
 	return h;}
 bool insideConvex(vector<P> const& q, P p) {
-	if (sz(q) == 2)
-		return onSegment(q[0],q[1],p);
+	if (sz(q) <= 2)
+		return onSegment(q[0],q.back(),p);
 	if (side(q[0],q[1],p) < 0 ||
         side(q.back(),q[0],p) < 0)
         return false;
@@ -56,3 +56,28 @@ int tangent(vector<P> const& q, P p, int dir, int l, int r) {
 pii tangents(vector<P> const& q, P p) {
 	return {tangent(q,p,-1,0,sz(q)-1),
             tangent(q,p,+1,0,sz(q)-1)};}
+			
+array<P, 2> hullDiameter(vector<P> S) {
+	int n = sz(S), j = (n >= 2);
+	pair<ll, array<P, 2>> res({0, {S[0], S[0]}});
+	rep(i,0,j)
+		for (;; j = (j + 1) % n) {
+			res = max(res, {len2(S[i] - S[j]), {S[i], S[j]}});
+			if (det(S[(j + 1) % n] - S[j], S[i + 1] - S[i]) >= 0)
+				break;
+		}
+	return res.second;
+}
+vector<P> minkowski(vector<P> a, vector<P> b) {
+	rotate(a.begin(), min_element(all(a)), a.end());
+	rotate(b.begin(), min_element(all(b)), b.end());
+	rep(i,0,2) a.pb(a[i]), b.pb(b[i]);
+	vector<P> res;
+	for(int i = 0, j = 0; i < sz(a) - 2 || j < sz(b) - 2; ) {
+		res.pb(a[i] + b[j]);
+		auto cross = sgn(det(a[i + 1] - a[i], b[j + 1] - b[j]));
+		if(cross >= 0 && i < sz(a)) i++;
+		if(cross <= 0 && j < sz(b)) j++;
+	}
+	return res;
+}

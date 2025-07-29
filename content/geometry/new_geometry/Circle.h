@@ -52,13 +52,14 @@ D intersectArea(P c, D r, vector<P> poly) {
     return res;
 }
 
+// external R > 0, internal R < 0, point R = 0
 vector<pair<P,P>> tangents(P a, D r, P b, D R) {
-    P v = rot90(b-a);
+    P d = b-a;
     D dr = r-R, d2 = len2(v), h2 = d2-dr*dr;
     if (sgn(d2) == 0 || h2 < 0) return {};
     vector<pair<P,P>> res;
     for (D sign : {-1, +1}) {
-        P v = (d*dr+v*sqrt(h2)*sign)/d2;
+        P v = (d*dr+rot90(d)*sqrt(h2)*sign)/d2;
         res.pb({c1+v*r1, c2+v*r2});
     }
     if (h2==0) res.pop_back();
@@ -106,7 +107,7 @@ D circlesUnionArea(vector<pair<P, D>> c) {
 		for(auto &[q, s]: c) if(mp(p, r) != mp(q, s)) {
 			D dst = len(p-q);
             if(r + dst <= s) { cover = 1; break; }
-            vector<P> inters=inter(p,r,q,s);
+            vector<P> inters=intersect(p,r,q,s);
             if (inters.empty()) continue;
 			D le = angle(inters[0] - p);
 			D re = angle(inters[1] - p);

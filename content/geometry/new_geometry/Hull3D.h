@@ -59,3 +59,10 @@ vector<F> hull3d(const vector<P3>& A) {
 		A[it.c] - A[it.a]),it.q) <= 0) swap(it.c, it.b);
 	return FS;
 };
+
+template<class V, class L>
+D signedPolyVolume(const V& p, const L& trilist) {
+	double v = 0;
+	for (auto i : trilist) v += p[i.a].cross(p[i.b]).dot(p[i.c]);
+	return v / 6;
+}
