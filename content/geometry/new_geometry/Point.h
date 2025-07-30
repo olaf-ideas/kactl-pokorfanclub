@@ -13,7 +13,7 @@ using P=pair<D,D>;
 #define x st
 #define y nd
 
-const D eps = 1e-9L;
+const D eps = 1e-6L;
 int sgn(D v){ return (v > +eps) - (v < -eps); }
 
 P operator+(P a, P b){ return {a.x+b.x,a.y+b.y}; }
@@ -37,6 +37,9 @@ P rotate(P v, D alpha) {
 D angle(P v) { return atan2(v.y, v.x); }
 int side(P a, P b, P c) { return sgn(det(a,b,c)); }
 
-int half(P v) { return sgn(v.y)>0||(sgn(v.y)==0&&sgn(v.x)==0); }
+bool cmp(P a, P b) {
+    return sgn(a.x-b.x)==0?sgn(a.y-b.y)<0:sgn(a.x-b.x)<0; }
+
+int half(P v) { return sgn(v.y)>0||(sgn(v.y)==0&&sgn(v.x)>=0); }
 bool angle_cmp(P a, P b) {
     return half(a)!=half(b)?half(a)<half(b):sgn(det(a,b))>0; }

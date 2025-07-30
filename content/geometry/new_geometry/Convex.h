@@ -10,14 +10,13 @@
 #include "Segment.h"
 
 vector<P> convexHull(vector<P> pts) {
-	sort(all(pts));
-	pts.erase(unique(all(pts)), end(pts));
+	sort(all(pts),cmp);
 	if (sz(pts) <= 2) return pts;
 	vector<P> h;
 	rep(i,0,2) {
 		int s = sz(h)+2;
 		for (P p:pts){
-			while (sz(h)>=s&&det(end(h)[-2],end(h)[-1],p)<=0)
+			while (sz(h)>=s&&side(end(h)[-2],end(h)[-1],p)<=0)
 				h.pop_back();
 			h.pb(p);}
 		h.pop_back(), reverse(all(pts));
@@ -45,10 +44,10 @@ int tangent(vector<P> const& q, P p, int dir, int l, int r) {
 			int i=tangent(q,p,dir,l,m);
 			int j=tangent(q,p,dir,m,r);
 			return side(p,q[i],q[j])==dir?i:j;}
-		if (!prev) {
+		if (!pv) {
 			if (side(p,q[m],q[l])==dir||side(p,q[l],q[r])==dir) r=m;
 			else l = m;}
-		if (!next) {
+		if (!nt) {
 			if (side(p,q[m],q[r])==dir||side(p,q[r],q[l])==dir) l=m;
 			else r = m;}
 	}
@@ -59,7 +58,7 @@ pii tangents(vector<P> const& q, P p) {
 			
 array<P, 2> hullDiameter(vector<P> S) {
 	int n = sz(S), j = (n >= 2);
-	pair<ll, array<P, 2>> res({0, {S[0], S[0]}});
+	pair<D, array<P, 2>> res({0, {S[0], S[0]}});
 	rep(i,0,j)
 		for (;; j = (j + 1) % n) {
 			res = max(res, {len2(S[i] - S[j]), {S[i], S[j]}});

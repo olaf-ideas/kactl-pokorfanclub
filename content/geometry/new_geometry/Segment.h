@@ -14,7 +14,7 @@
 bool onSegment(P a, P b, P p) {
     return side(a, b, p)==0 && sgn(dot(a-p, b-p))<=0;
 }
-vector<P> intersect(P a, P b, P c, P d) {
+vector<P> intersectSegment(P a, P b, P c, P d) {
     auto da = det(c,d,a), db = det(c,d,b),
          dc = det(a,b,c), dd = det(a,b,d);
     if (sgn(da) * sgn(db) < 0 && sgn(dc) * sgn(dd) < 0)
