@@ -30,6 +30,7 @@ vector<P> halfplaneIntersection(vector<L> ls) {
         } else q.pb(h); }
     while (sz(q)>=3 && bad(q[0],end(q)[-1],end(q)[-2])) q.pop_back();
     while (sz(q)>=3 && bad(end(q)[-1],q[0],q[1])) q.pop_front();
+    if(sz(q)<3)return{};
     vector<P> h;
     rep(i,0,sz(q)){
         int j=(i+1)%sz(q);

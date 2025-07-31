@@ -42,4 +42,4 @@ bool cmp(P a, P b) {
 
 int half(P v) { return sgn(v.y)>0||(sgn(v.y)==0&&sgn(v.x)>=0); }
 bool angle_cmp(P a, P b) {
-    return half(a)!=half(b)?half(a)<half(b):sgn(det(a,b))>0; }
+    return half(a)!=half(b)?half(a)>half(b):sgn(det(a,b))>0; }
