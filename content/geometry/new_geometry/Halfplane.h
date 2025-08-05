@@ -6,7 +6,7 @@
  * Description: Halfplane intersection
  * Time: O(n \log n)
  * Usage: Add bounding box and be sure that points defining halfplane are farther than $\eps$.
- * Status: Tested with O(n^3) brute
+ * Status: Tested with O(n^3) brute and on various problems
  */
 
 #include "Point.h"

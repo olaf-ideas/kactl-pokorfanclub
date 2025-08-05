@@ -4,7 +4,7 @@
  * License: CC0
  * Source: old kactl + own seg_dist
  * Description: Segment primitives
- * Status: not tested
+ * Status: Tested on few tasks
  */
 #pragma once
 

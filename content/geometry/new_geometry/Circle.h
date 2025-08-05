@@ -4,7 +4,7 @@
  * License: CC0
  * Source: old kactl, kobor & https://github.com/spaghetti-source/algorithm/blob/master/geometry/_geom.cc
  * Description: Circle primitives
- * Status: not tested
+ * Status: Tested
  */
 #pragma once
 
@@ -14,53 +14,53 @@
 const D pi = acos(-1);
 
 vector<P> intersect(P a, D r, P b, D R) {
-    if (sgn(dist2(a,b))==0) return assert(sgn(r-R)!=0), {};
-    P v = rot90(b-a);
+    if (sgn(dist2(a,b))==0) return {};
+    P v = b-a;
     D d2 = len2(v), sum = r+R, dif = r-R,
       p = (d2+r*r-R*R)/(d2*2), h2 = r*r-p*p*d2;
     if (sum*sum < d2 || dif*dif > d2) return {};
-    P m = a+v*p, per = v * sqrt(fmax(0, h2)/d2);
+    P m = a+v*p, per = rot90(v) * sqrt(fmax(0, h2)/d2);
     return {m+per, m-per};
 }
 
 D intersectArea(P a, D r, P b, D R) {
     if (r < R) swap(a, b), swap(r, R);
-    auto A = [&](D r, D h) { return r*r*acos(h/r)-h*sqrt(r*r-h*h); };
-    auto l = len(a-b), k = (l*l+r*r-R*R)/(2*l);
-    if (sgn(l-r-R) >= 0) return 0;
-    if (sgn(r-r+R) <= 0) return pi*R*R;
-    if (sgn(l-r) >= 0) return A(r,k)+A(r,l-k);
-    else return A(r,k)+pi*r*r-A(r,k-l);
+    D d = len(a-b);
+    if(sgn(d-r-R)>=0) return 0;
+    if(sgn(d-r+R)<=0) return pi*R*R;
+    D u = 2*acos((d*d+r*r-R*R)/(2*d*r));
+    D v = 2*acos((d*d+R*R-r*r)/(2*d*R));
+    return 0.5*(r*r*(u-sin(u))+R*R*(v-sin(v)));
 }
 
 D intersectArea(P c, D r, vector<P> poly) {
-    auto arg = [&](P p, P q) { return atan2(det(p,q), dot(p,q)); };
+    auto arg = [&](P p, P q) { return atan2(det(p,q),dot(p,q)); };
     auto tri = [&](P p, P q) {
-        P w = q-p;
+        P w =q-p;
         auto r2 = r*r/2;
-        auto a = dot(w,p)/dot(w,w), b = (dot(p,p)-r*r)/dot(w,w);
-        auto d = a*a-b;
-        if (d <= 0) return arg(p,q)*r2;
-        auto s = fmax(0,-a-sqrt(d)), t = fmin(1, -a+sqrt(d));
-        if (t < 0 || 1 <= s) return arg(p,q)*r2;
-        P u = p+s*w, v = p+t*w;
+        auto a= dot(w,p)/dot(w,w), b=(dot(p,p)-r*r)/dot(w,w);
+        auto d=a*a-b;
+        if(d<=0)return arg(p,q)*r2;
+        auto s=fmax(0,-a-sqrt(d)), t=fmin(1,-a+sqrt(d));
+        if (t<0||1<=s) return arg(p,q)*r2;
+        P u=p+w*s, v=p+w*t;
         return arg(p,u)*r2+det(u,v)/2+arg(v,q)*r2;
     };
-    D res = 0;
+    D res=0;
     rep(i,0,sz(poly))
-        res += tri(poly[i]-c, poly[(i+1)%sz(poly)]-c);
+        res += tri(poly[i]-c,poly[(i+1)%sz(poly)]-c);
     return res;
 }
 
 // external R > 0, internal R < 0, point R = 0
 vector<pair<P,P>> tangents(P a, D r, P b, D R) {
     P d = b-a;
-    D dr = r-R, d2 = len2(v), h2 = d2-dr*dr;
+    D dr = r-R, d2 = len2(d), h2 = d2-dr*dr;
     if (sgn(d2) == 0 || h2 < 0) return {};
     vector<pair<P,P>> res;
     for (D sign : {-1, +1}) {
         P v = (d*dr+rot90(d)*sqrt(h2)*sign)/d2;
-        res.pb({c1+v*r1, c2+v*r2});
+        res.pb({a+v*r, b+v*R});
     }
     if (h2==0) res.pop_back();
     return res;
@@ -72,7 +72,7 @@ vector<P> circleLine(P c, D r, P a, P b) {
     if (h2 < 0) return {};
     if (h2 == 0) return {p};
     P h = unit(ab) * sqrt(h2);
-    return {p-h, p+h};
+    return {p+h, p-h};
 }
 
 pair<P,D> circumCircle(P a, P b, P c) {

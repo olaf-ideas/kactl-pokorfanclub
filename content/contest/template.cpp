@@ -29,7 +29,7 @@ auto operator<<(auto &o, auto x)->decltype(end(x), o) {
 #define debug(...)
 #endif
 
-#define rep(i,a,b) for(int i = a; i < (b); i++)
+#define rep(i,a,b) for(int i=(a);i<(b); i++)
 using pii = pair<int, int>;
 using vi = vector<int>;
 

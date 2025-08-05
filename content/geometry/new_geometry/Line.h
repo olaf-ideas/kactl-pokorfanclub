@@ -4,7 +4,7 @@
  * License: CC0
  * Source: God
  * Description: Line primitives
- * Status: not tested
+ * Status: Tested of few tasks
  */
 #pragma once
 
