@@ -9,30 +9,30 @@
 	% \kactlimport{FastKnapsack.h}
 	% \kactlimport{HilbertMO.h}
 	\kactlimport{ConstantIntervals.h}
-	\kactlimport{Packing.h}
+	%\kactlimport{Packing.h}
 	% \kactlimport{Int128IO.h}
 	\kactlimport{FastMod.h}
 	\kactlimport{FastInput.h}
 	% \kactlimport{Code.py}
 	% \kactlimport{TestDay.h}
-	\kactlimport{Mics.h}
+	% \kactlimport{Mics.h}
 
 \section{Dynamic programming}
 	\kactlimport{KnuthDP.h}
 	\kactlimport{DivideAndConquerDP.h}
 	\kactlimport{AliensTrick.h}
-	\subsection{Small hacks}
-		\begin{itemize}
-			\item \verb@x & -x@ is the least bit in \texttt{x}.
-			\item \verb@for(int x = m; x; ) { --x &= m; ... }@ loops over all subset masks of \texttt{m} (except \texttt{m} itself).
-			\item \verb@for(ll l = 1; l <= n; l++)@ \\ \verb@  { ll r = n / (n / l); ... l = r; }@ loops over all intervals having the same value of \texttt{n / i}.
-			\item \verb@c = x&-x, r = x+c; (((r^x) >> 2)/c) | r@ is the next number after \texttt{x} with the same number of bits set.
-			\item \verb@FOR(b, 0, K) FOR(i, 0, 1 << K)@ \\ \verb@  if(i & 1 << b) D[i] += D[i ^ (1 << b)];@ computes all sums of subsets.
-			\item Nazywam się Koporski, jestem elitarnym hakjerem. \\
-						Moja praca polega na tym, że rozwiązuje ludziom problemy. \\
-						Nie próbuj mnie wk*ać, bo sam będziesz mieć ze mną problem, \\
-						a rozwiązanie będzie tylko jedno.
-		\end{itemize}
+	%\subsection{Small hacks}
+	%	\begin{itemize}
+	%		\item \verb@x & -x@ is the least bit in \texttt{x}.
+	%		\item \verb@for(int x = m; x; ) { --x &= m; ... }@ loops over all subset masks of \texttt{m} (except \texttt{m} itself).
+	%		\item \verb@for(ll l = 1; l <= n; l++)@ \\ \verb@  { ll r = n / (n / l); ... l = r; }@ loops over all intervals having the same value of \texttt{n / i}.
+	%		\item \verb@c = x&-x, r = x+c; (((r^x) >> 2)/c) | r@ is the next number after \texttt{x} with the same number of bits set.
+	%		\item \verb@FOR(b, 0, K) FOR(i, 0, 1 << K)@ \\ \verb@  if(i & 1 << b) D[i] += D[i ^ (1 << b)];@ computes all sums of subsets.
+	%		\item Nazywam się Koporski, jestem elitarnym hakjerem. \\
+	%					Moja praca polega na tym, że rozwiązuje ludziom problemy. \\
+	%					Nie próbuj mnie wk*ać, bo sam będziesz mieć ze mną problem, \\
+	%					a rozwiązanie będzie tylko jedno.
+	%	\end{itemize}
 
 % \section{Debugging tricks}
 % 	\begin{itemize}
