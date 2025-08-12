@@ -6,15 +6,6 @@
  * Status:
  */
 
-#include <iostream>
-#include <vector>
-#include <map>
-#include <cstdio>
-#include <algorithm>
-#include <functional>
-
-using namespace std;
-
 #define fst first
 #define snd second
 #define all(c) ((c).begin()), ((c).end())
@@ -58,16 +49,4 @@ long long rectangle_area(vector<rectangle> rs) {
     aux(e.l,e.h,e.c,0,n,0);
   }
   return area;
-}
-
-
-int main() {
-  int ncase; scanf("%d", &ncase);
-  for (int icase = 0; icase < ncase; ++icase) {
-    int n; scanf("%d", &n);
-    vector<rectangle> rs(n);
-    for (int i = 0; i < n; ++i) 
-      scanf("%d %d %d %d", &rs[i].xl, &rs[i].yl, &rs[i].xh, &rs[i].yh); 
-    printf("Case %d: %lld\n", icase+1, rectangle_area(rs));
-  }
 }

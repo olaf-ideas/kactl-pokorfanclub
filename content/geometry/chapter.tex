@@ -1,70 +1,38 @@
 \chapter{Geometry}
 
-\section{Geometric primitives}
-	\kactlimport{Point.h} % ok
-	\kactlimport{lineDistance.h} % ok
-	\kactlimport{SegmentDistance.h} % ok
-	\kactlimport{SegmentIntersection.h} % ok
-	\kactlimport{lineIntersection.h} % ok
-	\kactlimport{sideOf.h}
-	\kactlimport{OnSegment.h}
-	% \kactlimport{linearTransformation.h}
-	\kactlimport{LineProjectionReflection.h}
-	% \kactlimport{Angle.h}
-
-\section{Circles}
-	\kactlimport{CircleIntersection.h}
-	\kactlimport{CircleTangents.h}
-	\kactlimport{CircleLine.h}
-	\kactlimport{CirclePolygonIntersection.h}
-	\kactlimport{circumcircle.h}
-	\kactlimport{MinimumEnclosingCircle.h}
-	\kactlimport{CirclesUnionArea.h}
+\section{Primitives}
+	\kactlimport{Point.h}
+	\kactlimport{Line.h}
+	\kactlimport{Segment.h}
+	\kactlimport{Circle.h}
 
 \section{Polygons}
-	\kactlimport{InsidePolygon.h}
-	\kactlimport{PolygonArea.h}
-	\kactlimport{PolygonCenter.h}
-	\kactlimport{PolygonTangents.h}
-	\kactlimport{Minkowski.h}
-	\kactlimport{PolygonCut.h}
-	\kactlimport{PolygonUnion.h}
-	\kactlimport{ConvexHull.h}
+	\kactlimport{Convex.h}
 	\kactlimport{ConvexHullOnline.h}
-	% \kactlimport{ConvexHullOnline2.h}
-	\kactlimport{HullDiameter.h}
-	\kactlimport{PointInsideHull.h}
-	\kactlimport{LineHullIntersection.h}
-	\kactlimport{HalfplaneIntersection.h}
-	\kactlimport{HalfplaneIntersectionOnline.h}
-	\kactlimport{PointLocation.h}
-
-\section{Misc. Point Set Problems}
-	\kactlimport{ClosestPair.h}
-	\kactlimport{FurthestPair.h}
-	\kactlimport{ManhattanMST.h}
-	\kactlimport{kdTree.h}
+	\kactlimport{ConvexHullOnline2.h}
+	\kactlimport{Polygon.h}
 	\kactlimport{DelaunayTriangulation.h}
-	% \kactlimport{FastDelaunay.h}
-	% \kactlimport{LiChaoST.h} % we got that in data-structures
-	\kactlimport{RectUnion.h}
+	\kactlimport{FastDelaunay.h}
+	\kactlimport{LineHullIntersection.h}
+
+\section{Misc. }
+	\kactlimport{ClosestPair.h}
+	\kactlimport{PointLocation.h}
 	\kactlimport{SegmentInterDetection.h}
+	\kactlimport{Halfplane.h}
+	\kactlimport{HalfplaneOnline.h}
+	\kactlimport{kdTree.h}
+	\kactlimport{ManhattanMST.h}
+	\kactlimport{RectUnion.h}
 
 \section{3D}
-	\kactlimport{PolyhedronVolume.h}
 	\kactlimport{Point3D.h}
-	\kactlimport{3dHull.h}
-	\kactlimport{sphericalDistance.h}
-	% \kactlimport{sphereIntersection.h}
+	\kactlimport{Hull3D.h}
+	\kactlimport{Sphere.h}
 
 \section{Spherical coordinates}
-	\begin{center}
-	\includegraphics[width=25mm]{content/geometry/sphericalCoordinates}
-	\end{center}	
-	\[
 	\begin{array}{cc}
 	x = r\sin\theta\cos\phi & r = \sqrt{x^2+y^2+z^2}\\
 	y = r\sin\theta\sin\phi & \theta = \textrm{acos}(z/\sqrt{x^2+y^2+z^2})\\
 	z = r\cos\theta & \phi = \textrm{atan2}(y,x)
 	\end{array}
-	\]

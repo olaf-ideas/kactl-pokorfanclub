@@ -8,7 +8,10 @@
  */
 
 using D=ld;
-struct P3 { array<D, 3> v; };
+struct P { 
+    array<D, 3> v; 
+    auto operator<=>(P const&p) const = default;
+};
 #define x v[0]
 #define y v[1]
 #define z v[2]

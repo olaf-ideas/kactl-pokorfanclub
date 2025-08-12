@@ -34,28 +34,27 @@ bool insideConvex(vector<P> const& q, P p) {
 		(side(q[0],q[m],p)>=0?l:r)=m;
 	}
     return side(q[l],q[r],p)>=0;}
-int tangent(vector<P> const& q, P p, int dir, int l, int r) {
-	while (r - l > 1) {
-		int m = (l + r) >> 1;
-		int pv = side(p,q[m],q[m-1])!=-dir;
-		int nt = side(p,q[m],q[m+1])!=-dir;
-        if (pv && nt) return m;
-        if (!pv && !nt) {
-			int i=tangent(q,p,dir,l,m);
-			int j=tangent(q,p,dir,m,r);
-			return side(p,q[i],q[j])==dir?i:j;}
-		if (!pv) {
-			if (side(p,q[m],q[l])==dir||side(p,q[l],q[r])==dir) r=m;
-			else l = m;}
-		if (!nt) {
-			if (side(p,q[m],q[r])==dir||side(p,q[r],q[l])==dir) l=m;
-			else r = m;}
-	}
-	return side(p,q[l],q[r])==dir?l:r;}
-pii tangents(vector<P> const& q, P p) {
-	return {tangent(q,p,-1,0,sz(q)-1),
-            tangent(q,p,+1,0,sz(q)-1)};}
-			
+#define pdir(i) (ph ? p - poly[(i)%n] : poly[(i)%n] - p)
+#define cmp(i,j) sgn(pdir(i).cross(poly[(i)%n]-poly[(j)%n]))
+#define extr(i) cmp(i + 1, i) >= 0 && cmp(i, i - 1 + n) < 0
+template <class P>
+array<int, 2> polygonTangents(vector<P>& poly, P p) {
+	auto bs = [&](int ph) {
+		int n = sz(poly), lo = 0, hi = n;
+		if(extr(0)) return 0;
+		while(lo + 1 < hi) {
+			int m = (lo + hi) / 2;
+			if(extr(m)) return m;
+			int ls = cmp(lo + 1, lo), ms = cmp(m + 1, m);
+			(ls < ms || (ls == ms && ls == cmp(lo, m)) ? hi:lo) = m;
+		}
+		return lo;
+	};
+	array<int, 2> res = {bs(0), bs(1)};
+	if(res[0] == res[1]) res[0] = (res[0] + 1) % SZ(poly);
+	if(poly[res[0]] == p) res[0] = (res[0] + 1) % SZ(poly);
+	return res;
+}	
 array<P, 2> hullDiameter(vector<P> S) {
 	int n = sz(S), j = (n >= 2);
 	pair<D, array<P, 2>> res({0, {S[0], S[0]}});
