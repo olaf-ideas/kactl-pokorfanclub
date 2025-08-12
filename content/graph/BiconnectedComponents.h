@@ -1,53 +1,37 @@
 /**
- * Author: Simon Lindholm
- * Date: 2017-04-17
+ * Author: Krzysztof Olejnik
+ * Date: 2025-07-12
  * License: CC0
  * Source: folklore
- * Description: Finds all biconnected components in an undirected graph, and
- *  runs a callback for the edges in each. In a biconnected component there
- *  are at least two distinct paths between any two nodes. Note that a node can
- *  be in several components. An edge which is not in a component is a bridge,
- *  i.e., not part of any cycle.
+ * Description: Finds all biconnected components in an undirected graph.
+ *  In a biconnected component there are at least two distinct paths between any 
+ * 	two nodes. Note that a node can be in several components. An edge which is 
+ *  not in a component is a bridge i.e., not part of any cycle. bls contains
+ *  vertices of bbcs, edgs edges of bbcs, bl[i] = max id of bls vertex i belongs to.
  * Usage:
- *  int eid = 0; ed.resize(N);
  *  for each edge (a,b) {
- *    ed[a].emplace_back(b, eid);
- *    ed[b].emplace_back(a, eid++); }
- *  bicomps([\&](const vi\& edgelist) {...});
+ *    adj[a].emplace_back(b, eid);
+ *    adj[b].emplace_back(a, eid++); }
+ *  for(int i=0;i<n;i++) if(!tin[i]) {tim=1;st.clear();dfs(i,-1)};
  * Time: O(E + V)
- * Status: tested during MIPT ICPC Workshop 2017
+ * Status: tested on yosupo and XXIII POI task
  */
 #pragma once
 
-vi num, st;
-vector<vector<pii>> ed;
-int Time;
-template<class F>
-int dfs(int at, int par, F& f) {
-	int me = num[at] = ++Time, top = me;
-	for (auto [y, e] : ed[at]) if (e != par) {
-		if (num[y]) {
-			top = min(top, num[y]);
-			if (num[y] < me)
-				st.push_back(e);
-		} else {
-			int si = sz(st);
-			int up = dfs(y, e, f);
-			top = min(top, up);
-			if (up == me) {
-				st.push_back(e);
-				f(vi(st.begin() + si, st.end()));
-				st.resize(si);
-			}
-			else if (up < me) st.push_back(e);
-			else { /* e is a bridge */ }
-		}
-	}
-	return top;
-}
-
-template<class F>
-void bicomps(F f) {
-	num.assign(sz(ed), 0);
-	rep(i,0,sz(ed)) if (!num[i]) dfs(i, -1, f);
-}
+int tim=1, tin[N], low[N], isart[N], bl[N]; vi st;
+vector<pii> ste, edgs[N]; vector<vi> bls;
+void dfs(int v, int p){ st.pb(v); tin[v] = low[v] = tim++;
+  if(!adj[v].size()) 
+    bl[st.back()] = sz(bls)-1, bls.push_back({v}), st.pop_back();
+  for(auto& [u, e] : adj[v]){ if(e == p) continue; // if(u == p)
+    if(tin[u] < tin[v]) ste.eb(v,u);
+    if(tin[u]) low[v] = min(low[v], tin[u]);
+    else{ dfs(u, e); low[v] = min(low[v], low[u]);
+      if(low[u] >= tin[v]){ isart[v] = (tin[v] > 1 || tin[u] > 2);
+        edgs[sz(bls)].pb(ste.back()); ste.pop_back();
+        while(edgs[sz(bls)].back() != mp(v,u)){
+          edgs[sz(bls)].pb(ste.back()); ste.pop_back();
+        } bls.pb({v});
+        while(bls.back().back() != u){ bl[st.back()] = sz(bls)-1;
+          bls.back().pb(st.back()); st.pop_back();
+}}}}}
