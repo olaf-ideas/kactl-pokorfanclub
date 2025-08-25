@@ -18,16 +18,15 @@
  */
 #pragma once
 
-int tim=1, tin[N], low[N], isart[N], bl[N]; vi st;
-vector<pii> ste, edgs[N]; vector<vi> bls;
+int tim=1, tin[N], low[N], art[N]; vi st;
+vector<pii> ste, edgs[N]; vector<vi> bl;
 void dfs(int v, int p){ st.pb(v); tin[v] = low[v] = tim++;
-  if(!adj[v].size()) bl[st.back()] = sz(bls)-1, bls.pb({v});
+  if(!adj[v].size()) bl.pb({v}), st.pop_back();
   for(auto& [u, e] : adj[v]){ if(e == p) continue; // if(u == p)
-    if(tin[u] < tin[v]) ste.eb(v,u);
+    if(tin[u] < tin[v]) ste.eb(v,u); 
     if(tin[u]) low[v] = min(low[v], tin[u]);
     else{ dfs(u, e); low[v] = min(low[v], low[u]);
-      if(low[u] >= tin[v]){ isart[v] = (tin[v] > 1 || tin[u] > 2);
-        do{edgs[sz(bls)].pb(ste.back()); ste.pop_back();
-        }while(edgs[sz(bls)].back() != mp(v,u));  bls.pb({v});
-        while(bls.back().back() != u){ bl[st.back()] = sz(bls)-1;
-          bls.back().pb(st.back()); st.pop_back(); }}}}}
+      if(low[u] >= tin[v]){ art[v] = (tin[v] > 1 || tin[u] > 2);
+        do{edgs[sz(bl)].pb(ste.back()); ste.pop_back();}
+        while(edgs[sz(bl)].back() != mp(v,u)); bl.pb({v});
+        while(bl.back().back() != u){bl.back().pb(st.back()); st.pop_back();}}}}}
