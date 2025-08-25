@@ -30,7 +30,7 @@ struct TwoSat {
 	} int addVar() { // (optional)
 		gr.emplace_back(); gr.emplace_back();
 		return N++;
-	} void setValue(int x) { either(x, x); }
+	} void imply(int x, int y) { either(~x, y); }
 	void atMostOne(const vi& li) {
 		if (sz(li) <= 1) return;
 		int cur = ~li[0];
@@ -43,8 +43,7 @@ struct TwoSat {
 	int dfs(int i) {
 		int low = val[i] = ++time, x; z.push_back(i);
 		for(int e : gr[i]) if (!comp[e]) low = min(low, val[e] ?: dfs(e));
-		if (low == val[i]) do {
-			x = z.back(); z.pop_back(); comp[x] = low;
+		if (low == val[i]) do {x = z.back(); z.pop_back(); comp[x] = low;
 			if (values[x>>1] == -1) values[x>>1] = x&1;
 		} while (x != i); return val[i] = low;
 	} bool solve() {
