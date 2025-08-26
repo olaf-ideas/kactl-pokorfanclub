@@ -18,12 +18,10 @@ vector<ll> spfa(vector<vector<Edge>>& G,
 	auto add = [&](int v, int p, ll d) {
 		par[v] = p; dist[v] = d;
 		prv[n] = nxt[prv[v] = prv[nxt[v] = n]] = v;
-	};
-	auto del = [&](int v) {
+	}; auto del = [&](int v) {
 		nxt[prv[nxt[v]] = prv[v]] = nxt[v];
 		prv[v] = nxt[v] = v;
-	};
-	for (add(src, -2, 0); nxt[n] != n;) {
+	}; for (add(src, -2, 0); nxt[n] != n;) {
 		int v = nxt[n]; del(v);
 		for (auto e : G[v]) {
 			ll alt = dist[v] + e.y;
@@ -34,10 +32,6 @@ vector<ll> spfa(vector<vector<Edge>>& G,
 					del(w);
 					for (auto f : G[w])
 						if (par[f.x] == w) que.pb(f.x);
-				}
-				if (par[v] == -1) return {};
+				} if (par[v] == -1) return {};
 				add(e.x, v, alt);
-			}
-		}
-	}
-	return dist; }
+			}}} return dist; }

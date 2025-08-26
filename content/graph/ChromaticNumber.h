@@ -17,18 +17,15 @@ int chromaticNumber(vi g) {
 	int n = sz(g);
 	if (!n) return 0;
 	vi ind(1 << n, 1), s(1 << n);
-	rep(i, 1 << n) s[i] = __popcount(i) & 1 ? -1 : 1;
-	fwd(i, 1, 1 << n) {
+	rep(i, 0, 1<<n) s[i] = __popcount(i) & 1 ? -1 : 1;
+	rep(i, 1, 1<<n) {
 		int ctz = __builtin_ctz(i);
 		ind[i] = ind[i - (1 << ctz)] + ind[(i - (1 << ctz)) & ~g[ctz]];
 		if (ind[i] >= MOD) ind[i] -= MOD;
-	}
-	fwd(k, 1, n) {
+	} rep(k, 1, n) {
 		ll sum = 0;
-		rep(i, 1 << n) {
+		rep(i, 0, 1<<n) {
 			s[i] = int((ll)s[i] * ind[i] % MOD);
 			sum += s[i];
-		}
-		if (sum % MOD) return k;
-	}
-	return n; }
+		} if (sum % MOD) return k;
+	} return n; }
