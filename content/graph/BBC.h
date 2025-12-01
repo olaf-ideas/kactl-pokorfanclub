@@ -10,7 +10,7 @@
  *  vertices of bbcs, edgs edges of bbcs.
  * Usage:
  *  for each edge (a,b) {
- *    adj[a].emplace_back(b, eid); // if not need for edgs
+ *    adj[a].emplace_back(b, eid); // if no need for edgs
  *    adj[b].emplace_back(a, eid++); // then skip eid
  *  } rep(i,0,n) if(!tin[i]) {tim=1;st.clear();dfs(i,-1);}
  * Time: O(E + V)
@@ -26,7 +26,7 @@ void dfs(int v, int p){ st.pb(v); tin[v] = low[v] = tim++;
   if(tin[u] < tin[v]) ste.eb(v,u); 
   if(tin[u]) low[v] = min(low[v], tin[u]);
   else{ dfs(u, e); low[v] = min(low[v], low[u]);
-   if(low[u] >= tin[v]){ art[v] = (tin[v] > 1 || tin[u] > 2);
+   if(low[u] >= tin[v]){ art[v] = tin[u] > 2;
     do{edgs[sz(bl)].pb(ste.back()); ste.pop_back();}
     while(edgs[sz(bl)].back() != mp(v,u)); bl.pb({v});
     while(bl.back().back()!=u){bl.back().pb(st.back());st.pop_back();}}}}}
