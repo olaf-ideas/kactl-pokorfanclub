@@ -3,13 +3,13 @@
 
 # Slow compilation
 c() {
-	g++ $1.cpp -o $1 -std=gnu20 -Wall -Wshadow -Wextra \
-	-fsanitize=undefined,address -ggdb3 -DLOCAL -I$HOME/bits
+	g++ $1.cpp -o $1 -std=c++23 -Wall -Wshadow -Wextra \
+	-fsanitize=undefined,address -ggdb3 -DLOCAL
 }
 
 # Quick compilation
 nc() {
-	g++ $1.cpp -o $1 -std=gnu20 -O2 -g -static
+	g++ $1.cpp -o $1 -std=c++23 -O3 -static
 }
 
 # Time and memory usage
